@@ -1,0 +1,49 @@
+<?php
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::get('/', 'UserControllers@index')->name('homepage');
+
+Route::prefix('admin')->group(function () {
+
+    Route::get('/', 'AdminControllers@index')->name('admin.homepage');
+
+    // SHOW FILE
+    Route::get('/list_file', 'AdminControllers@list_file')->name('admin.list_file');
+    Route::get('/file/{id_file}', 'AdminControllers@detail_file')->name('admin.file');
+    Route::delete('/file/{id_file}', 'AdminControllers@delete_file')->name('admin.delete_file');
+
+    // UPLOAD FILE
+    Route::get('/upload', function () {
+        return view('user.upload_file.v_upload_file');
+    })->name('admin.form_upload');
+
+    Route::post('/upload', 'AdminControllers@upload_proses')->name('admin.upload_proses');
+
+    // EDIT FILE
+    Route::get('/edit_file/{id_file}', 'AdminControllers@edit_file')->name('admin.edit_file');
+    Route::get('/edit_file', function() {
+        return redirect(URL::previous());
+    });
+    Route::post('/edit_file', 'AdminControllers@edit_proses')->name('admin.edit_proses');
+
+    //DOWNLOAD FILE
+    Route::post('/download_file', 'AdminControllers@download_file')->name('admin.download_file');
+
+});
+
+
+
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

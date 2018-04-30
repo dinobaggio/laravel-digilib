@@ -1,0 +1,44 @@
+* {
+    box-sizing: border-box;
+}
+.main1 {
+    float:left;
+    width:30%;
+    word-wrap: break-word;
+    border-style: solid;
+    border-width: 0px 2px 0px 0px;
+    padding-right: 10px;
+}
+.main1 a {
+    width:100%;
+    color:black;
+}
+.main2 {
+    border-style: solid;
+    border-width: 0px 0px 0px 2px;
+    float:left;
+    width:70%;
+    padding:0 20px;
+    word-wrap: break-word;
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+.flex-container > div {
+    background-color: #f1f1f1;
+    border-style: solid;
+    border-width: 2px;
+    width: 30%;
+    margin: 10px;
+    word-wrap: break-word;
+  }
+
+@media only screen and (max-width:620px) {
+  /* For mobile phones: */
+  .main1, .main2 {
+        width:100%;
+  }
+}
