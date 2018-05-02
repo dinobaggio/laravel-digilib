@@ -11,7 +11,8 @@
 |
 */
 
-Route::get('/', 'UserControllers@index')->name('homepage');
+Route::get('/', 'NonUserControllers@index')->name('non_user.homepage');
+Route::get('/detail_file/{id_file}', 'NonUserControllers@detail_file')->name('non_user.file');
 
 Route::prefix('admin')->group(function () {
 
@@ -24,7 +25,7 @@ Route::prefix('admin')->group(function () {
 
     // UPLOAD FILE
     Route::get('/upload', function () {
-        return view('user.upload_file.v_upload_file');
+        return view('admin.upload_file.v_upload_file');
     })->name('admin.form_upload');
 
     Route::post('/upload', 'AdminControllers@upload_proses')->name('admin.upload_proses');

@@ -1,6 +1,11 @@
 @extends('base.v_master')
 @section('title', 'Detail Book')
 
+
+@section('nav_bar')
+    @include('base.nav_admin')
+@endsection('nav_bar')
+
 @section('content')
 
 

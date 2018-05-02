@@ -1,7 +1,31 @@
 @extends('base.v_master')
 @section('title', 'Selamat datang di digilib')
 
+@section('nav_bar')
+    @include('base.nav_admin')
+@endsection('nav_bar')
+
 @section('content')
+
+<style>
+.wrapper {
+    padding:1em;
+    display:grid;
+    /*grid-template-columns: 50% 50%;*/
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap:1em;
+    grid-auto-rows: minmax(50px, auto);
+}
+.wrapper > div {
+    background: #eee;
+    padding: 1em;
+}
+
+.wrapper > div:nth-child(odd) {
+    background:#ddd;
+}
+</style>
+
 <div id="input_cari">
     <form action="{{ route('admin.homepage') }}" style="display:inline;">
         @if ($cari != '')
@@ -13,14 +37,16 @@
 </div>
 
 @if ($files)
-<div class="flex-container">
+<div class="wrapper">
     @foreach ($files as $file)
         <div>
-            <center><h3><a href="{{ route('admin.file', ['file_id'=> $file->id_file]) }}">{{$file->judul}}</a></h3></center>
+            <h3><a href="{{ route('admin.file', ['file_id'=> $file->id_file]) }}">{{$file->judul}}</a></h3>
+            <center>
+                <div style="font-size:3em;" ><i class="fas fa-book"></i></div>
+            </center>
             <p><b>Kategori :</b> {{$file->kategori}}</p>
         </div>
     @endforeach
-     
 </div>
 <div class="paginator" align="center">{{ $files->appends(request()->query())->links() }}</div> 
 @else

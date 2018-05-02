@@ -1,6 +1,10 @@
 @extends('base.v_master')
 @section('title', 'List File')
 
+@section('nav_bar')
+    @include('base.nav_admin')
+@endsection('nav_bar')
+
 @section('content')
 
 <div id="input_cari">

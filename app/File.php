@@ -30,7 +30,7 @@ class File extends Model
         
         if ($cari != '') {
             $files = self::join('books', 'files.id_file', '=', 'books.id_book')
-            ->select('files.id_file', 'books.judul', 'files.nama_asli', 'files.size', 'files.kategori', 'files.path')
+            ->select('files.id_file', 'books.judul', 'files.nama_asli', 'files.size', 'files.kategori', 'files.path', 'files.extension')
             ->where('judul', 'LIKE', "%$cari%")
             ->orWhere('nama_asli', 'LIKE', "%$cari%")
             ->orderBy('files.created_at', 'desc')

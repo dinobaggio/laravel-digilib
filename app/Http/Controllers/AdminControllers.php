@@ -28,7 +28,7 @@ class AdminControllers extends Controller
             'files'=> $files,
             'cari' => $cari
         );
-        return view('user.homepage.v_homepage', $data);
+        return view('admin.homepage.v_homepage', $data);
 
     }
 
@@ -43,7 +43,7 @@ class AdminControllers extends Controller
             'files'=> $files,
             'cari' => $cari
         );
-        return view('user.list_file.v_list_file', $data);
+        return view('admin.list_file.v_list_file', $data);
         
     }
 
@@ -59,13 +59,13 @@ class AdminControllers extends Controller
                 $data = array(
                     'book' => $book
                 );
-                return view('user.detail_ebook.v_detail_ebook', $data);
+                return view('admin.detail_ebook.v_detail_ebook', $data);
             }
         } else {
             $data = array(
                 'book' => false
             );
-            return view('user.detail_ebook.v_detail_ebook', $data);
+            return view('admin.detail_ebook.v_detail_ebook', $data);
         }
     }
 
@@ -94,7 +94,7 @@ class AdminControllers extends Controller
                 $data = array(
                     'book' => $book
                 );
-                return view('user.edit_ebook.v_edit_ebook', $data);
+                return view('admin.edit_ebook.v_edit_ebook', $data);
             endif;
         else :
             return redirect()->route('list_file');
