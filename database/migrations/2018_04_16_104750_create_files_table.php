@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Storage;
+use App\File;
 
 class CreateFilesTable extends Migration
 {
@@ -34,6 +36,15 @@ class CreateFilesTable extends Migration
      */
     public function down()
     {
+        $files = $this->files_data();
+        for ($i=0;$i<count($files);$i++) {
+            Storage::delete($files[0]['path']);
+        }
         Schema::dropIfExists('files');
+    }
+
+    public function files_data () {
+        $files = File::select('path')->get();
+        return $files;
     }
 }

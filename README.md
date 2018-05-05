@@ -5,4 +5,4 @@ belum ada templatenya
 
 # Installation
 
-php artisan migrate
+php artisan migrate --seed

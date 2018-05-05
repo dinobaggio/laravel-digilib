@@ -18,6 +18,8 @@ class AdminControllers extends Controller
     }
 
     public function index () {
+        //dd(File::select('path')->get()[0]['path']);
+
         $req = request();
         $this->author_admin($req);
 
