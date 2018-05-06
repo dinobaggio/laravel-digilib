@@ -2,7 +2,7 @@
 @section('title', 'Selamat datang di digilib')
 
 @section('nav_bar')
-    @include('base.nav_user')
+    @include('base.nav_non_user')
 @endsection('nav_bar')
 
 @section('content')

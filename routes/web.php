@@ -40,6 +40,10 @@ Route::prefix('admin')->group(function () {
     //DOWNLOAD FILE
     Route::post('/download_file', 'AdminControllers@download_file')->name('admin.download_file');
 
+    // TAMBAH USER
+    Route::get('/tambah_user', 'AdminControllers@form_tambah_user')->name('admin.form_tambah_user');
+    Route::post('/tambah_user', 'AdminControllers@tambah_user')->name('admin.tambah_user');
+
 });
 
 

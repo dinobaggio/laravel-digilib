@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Illuminate\Http\Request;
@@ -9,6 +10,8 @@ use App\Http\Requests\UploadFormRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Book;
 use App\File;
+use App\User;
+use App\Role;
 
 class AdminControllers extends Controller
 {
@@ -83,12 +86,15 @@ class AdminControllers extends Controller
                 Storage::delete($book->path);
                 Book::delete_ebook($id_file);
                 File::delete_file($id_file);
-                return redirect()->route('list_file');
+                return redirect()->route('admin.list_file');
             }
         }
     }
 
     public function edit_file ($id_file) {
+        $req = request();
+        $this->author_admin($req);
+
         $file = File::detail_file($id_file);
         if ($file) :
             if ($file->kategori == 'ebook') :
@@ -224,6 +230,33 @@ class AdminControllers extends Controller
             $nama_asli = $req->input('nama_asli');
             return Storage::download($path, $nama_asli);
         }
+    }
+
+    public function form_tambah_user () {
+        return view('admin.tambah_user.v_tambah_user');
+    }
+
+    public function tambah_user (Request $req) {
+        $this->author_admin($req);
+        
+        $validasi = $req->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+            'role' => 'required|string|max:10'
+        ]);
+
+        $data = [
+            'name' => $req->input('name'),
+            'email' => $req->input('email'),
+            'password' => Hash::make($req->input('password')),
+            'role' => $req->input('role')
+        ];
+
+        $user = User::tambah_user($data);
+        
+        return redirect()->route('admin.form_tambah_user');
+
     }
 
     public function author_admin ($request) {

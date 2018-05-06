@@ -3,7 +3,7 @@
 
 
 @section('nav_bar')
-    @include('base.nav_user')
+    @include('base.nav_non_user')
 @endsection('nav_bar')
 
 @section('content')
@@ -55,9 +55,9 @@
                 {{ __('Login') }}
             </button>
 
-            <a class="btn btn-link" href="{{ route('password.request') }}">
+            <!-- <a class="btn btn-link" href="{{ route('password.request') }}">
                 {{ __('Forgot Your Password?') }}
-            </a>
+            </a> -->
         </div>
     </div>
 </form>

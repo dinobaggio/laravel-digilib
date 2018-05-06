@@ -49,4 +49,19 @@ class User extends Authenticatable
     public function getRole() {
         return $this->roles()->where('user_id', $this->id)->first();
     }
+
+    public static function tambah_user ($data) {
+        $user = self::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => $data['password']
+        ]);
+
+        $user->roles()
+        ->attach(Role::where('name', $data['role'])->first());
+
+        return true;
+
+    }
+
 }
