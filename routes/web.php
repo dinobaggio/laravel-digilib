@@ -11,7 +11,30 @@
 |
 */
 
-Route::get('/', 'NonUserControllers@index')->name('non_user.homepage');
+use App\Http\Controllers\NonUserControllers;
+
+
+Route::get('/', function () {
+    
+    $req = request();
+    $non = new NonUserControllers();
+
+    if (Auth::check()) {
+        $role = $req->user()->getRole()->name;
+        if ($role == 'admin') {
+            return redirect()->route('admin.homepage');
+        } else if ($role == 'dosen') {
+            return redirect()->route('dosen.homepage'); // rencana
+        } else if ($role == 'mahasiswa') {
+            return redirect()->route('mahasiswa.homepage'); //rencana
+        }
+    }
+
+    return $non->index();
+
+})->name('non_user.homepage');
+
+
 Route::get('/detail_file/{id_file}', 'NonUserControllers@detail_file')->name('non_user.file');
 
 Route::prefix('admin')->group(function () {

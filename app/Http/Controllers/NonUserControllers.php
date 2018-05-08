@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UploadFormRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Book;
@@ -11,7 +12,13 @@ use App\File;
 
 class NonUserControllers extends Controller
 {
+    public function __construct(){
+        
+        
+    }
     public function index () {
+        $req = request();
+        
         $cari = trim_all(request()->input('cari'));
         $cari = htmlspecialchars($cari);
         $files = File::list_file_homepage($cari);
@@ -41,4 +48,5 @@ class NonUserControllers extends Controller
             return view('non_user.detail_ebook.v_detail_ebook', $data);
         }
     }
+    
 }
