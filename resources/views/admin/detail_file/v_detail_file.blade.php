@@ -10,35 +10,49 @@
 
 
 <div id="detail_book" style="overflow:auto">
-@if ($book)
-    
+@if ($file)
     <div id="main1" class="main1">
         
-            <b>Judul :</b> {{ $book->judul }} <br>
-            <b>Kategori :</b> {{ $book->kategori }} <br>        
-            <b>Size :</b> {{ human_filesize($book->size) }} <br> 
-            <b>Mime Type :</b> {{ $book->mime_file }} <br>
-            <b>Nama Asli :</b> {{ $book->nama_asli }} <br>
-            <b>Hash Name :</b> {{ $book->hash_name }} <br>
-            <b>Extension :</b> {{ $book->extension }} <br>
-            <b>ID Book :</b> #{{ $book->id_book }} <br>
-            <b>ID File :</b> #{{ $book->id_file }} <br>                   
-            <b>Path :</b> <a  href="{{ Storage::url($book->path) }}">{{ $book->path }}</a> <hr>
-            <form id="form_delete" method="post" action="{{route('admin.delete_file', ['file_id'=>$book->id_file])}}" style="display:inline;">
+            <p><b>Judul :</b> {{ $file->judul }}</p>
+            <p><b>Kategori :</b> {{ $file->kategori }}</p>
+            
+            @if($file->kategori == 'jurnal')
+                <p><b>Abstrak :</b> {{$file->abstrak}}</p>
+            @endif
+
+            <p><b>Size :</b> {{ human_filesize($file->size) }}</p> 
+            <p><b>Mime Type :</b> {{ $file->mime_file }}</p>
+            <p><b>Nama Asli :</b> {{ $file->nama_asli }}</p>
+            <p><b>Hash Name :</b> {{ $file->hash_name }}</p>
+            <p><b>Extension :</b> {{ $file->extension }}</p>
+
+            @if($file->kategori == 'jurnal')
+                <p><b>ID Jurnal :</b> #{{$file->id_jurnal}}</p>
+            @elseif($file->kategori == 'ebook')
+                <p><b>ID Book :</b> #{{ $file->id_book }}</p>
+            @elseif($file->kategori == 'artikel')
+                <p><b>ID Artikel :</b> #{{ $file->id_artikel }}</p>
+            @elseif($file->kategori == 'skripsi')
+                <p><b>ID Skripsi :</b> #{{ $file->id_skripsi }}</p>
+            @endif 
+            
+            <p><b>ID File :</b> #{{ $file->id_file }}</p>                   
+            <p><b>Path :</b> <a  href="{{ Storage::url($file->path) }}">{{ $file->path }}</a></p> <hr>
+            <form id="form_delete" method="post" action="{{route('admin.delete_file', ['file_id'=>$file->id_file])}}" style="display:inline;">
                 @method('delete')
                 @csrf
                 <button onclick="form_delete_submit()" formaction="javascript:void(0)">delete</button>
             </form>
-            <button onclick="view('{{ route('admin.edit_file', array('file_id'=>$book->id_file)) }}')" >edit</button>
+            <button onclick="view('{{ route('admin.edit_file', array('file_id'=>$file->id_file)) }}')" >edit</button>
     </div>
 
     <div id="main2" class="main2">
-        <h2>{{ $book->judul }}</h2>
-        <button onclick="lihat_ebook('{{ Storage::url($book->path) }}', '{{ $book->extension }}')">lihat ebook</button>
+        <h2>{{ $file->judul }}</h2>
+        <button onclick="lihat_file('{{ Storage::url($file->path) }}', '{{ $file->extension }}')">lihat file</button>
         <form id="form_download" method="post" action="{{ route('admin.download_file') }}" target="_blank" style="display:inline;">
             @csrf
-            <input type="hidden" name="path" value="{{ $book->path }}">
-            <input type="hidden" name="nama_asli" value="{{ $book->nama_asli }}">
+            <input type="hidden" name="path" value="{{ $file->path }}">
+            <input type="hidden" name="nama_asli" value="{{ $file->nama_asli }}">
             <button type="submit" >download</button>
         </form> 
         <br/>
@@ -52,7 +66,6 @@
     </div>
 @endif
 
-  
 </div>
 
 <script>
@@ -60,9 +73,9 @@ function view( url ) {
     window.open(url, "_self");
 }
 
-function lihat_ebook (path, extension) {
-    let ebook_iframe = document.getElementById('ebook_iframe');
-    if (ebook_iframe == null && extension == 'pdf') {
+function lihat_file (path, extension) {
+    let file_iframe = document.getElementById('file_iframe');
+    if (file_iframe == null && extension == 'pdf') {
         let tutup = document.createElement('button');
         let text_tutup = document.createTextNode('tutup');
         let full = document.createElement('button');
@@ -71,18 +84,18 @@ function lihat_ebook (path, extension) {
         let main2 = document.getElementById('main2');
 
         tutup.appendChild(text_tutup);
-        tutup.setAttribute('onclick', 'tutup_ebook()');
+        tutup.setAttribute('onclick', 'tutup_file()');
         tutup.setAttribute('id', 'tutup_button');
         tutup.setAttribute('style', 'margin-bottom:10px');
 
         full.appendChild(text_full);
-        full.setAttribute('onclick', 'full_ebook()');
+        full.setAttribute('onclick', 'full_file()');
         full.setAttribute('id', 'full_button');
         full.setAttribute('style', 'margin-bottom:10px');
 
-        iframe.setAttribute('id', 'ebook_iframe');
+        iframe.setAttribute('id', 'file_iframe');
         iframe.setAttribute('style', 'width:100%;height:650px;');
-        iframe.setAttribute('src', "{{ Storage::url($book->path) }}");
+        iframe.setAttribute('src', "{{ Storage::url($file->path) }}");
         
         main2.appendChild(tutup);
         main2.appendChild(full);
@@ -96,12 +109,12 @@ function lihat_ebook (path, extension) {
 
 }
 
-function tutup_ebook () {
+function tutup_file () {
     let main1 = document.getElementById('main1');
     let main2 = document.getElementById('main2');
     let tutup = document.getElementById('tutup_button');
     let full = document.getElementById('full_button');
-    let iframe = document.getElementById('ebook_iframe');
+    let iframe = document.getElementById('file_iframe');
 
     main2.removeChild(tutup);
     main2.removeChild(full);
@@ -110,26 +123,26 @@ function tutup_ebook () {
     main2.style.width = '';
 }
 
-function full_ebook () {
+function full_file () {
     let main1 = document.getElementById('main1');
     let main2 = document.getElementById('main2');
-    let iframe = document.getElementById('ebook_iframe');
+    let iframe = document.getElementById('file_iframe');
     let full = document.getElementById('full_button');
 
     full.innerHTML = "minimize";
-    full.setAttribute('onclick', 'minimize_ebook()');
+    full.setAttribute('onclick', 'minimize_file()');
     main2.style.width = '100%';
     main1.style.display = 'none';
 }
 
-function minimize_ebook() {
+function minimize_file() {
     let main1 = document.getElementById('main1');
     let main2 = document.getElementById('main2');
-    let iframe = document.getElementById('ebook_iframe');
+    let iframe = document.getElementById('file_iframe');
     let full = document.getElementById('full_button');
     
     full.innerHTML = "baca fullscreen";
-    full.setAttribute('onclick', 'full_ebook()');
+    full.setAttribute('onclick', 'full_file()');
     main2.style.width = '';
     main1.style.display = '';
 

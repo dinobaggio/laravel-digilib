@@ -13,14 +13,18 @@
         <table>
             <tr><td>Judul: </td><td><input type="text" name="judul" placeholder="Judul ..." /></td></tr>
             <tr><td>kategori: </td><td>
-                <select id="kategori" name="kategori"> 
+                <select id="kategori" name="kategori" onchange="tampil_abstrak()"> 
                     <option value=""  >Masukan Kategori ...</option>
                     <option value="ebook">E-Book</option>
-                    <!-- <option value="jurnal">Jurnal</option>
+                    <option value="jurnal">Jurnal</option>
                     <option value="artikel">Artikel</option>
-                    <option value="skripsi">Skripsi</option> -->
+                    <option value="skripsi">Skripsi</option>
                 </select>
             </td></tr>
+            <tr id="abstrak" style="display:none;">
+                <td>Abstrak</td>
+                <td><textarea name="abstrak" placeholder="Abstrak jurnal ..." rows='4' cols='30'></textarea></td>
+            </tr>
             <!-- 
             <tr><td>Pengarang: </td><td><input type="text" name="pengarang" placeholder="Pengarang ..." /></td></tr>
             <tr><td>Bahasa: </td><td><input type="text" name="bahasa" placeholder="Bahasa ..." /></td></tr>
@@ -52,6 +56,17 @@ function upload_proses () {
     if (yakin) {
         form_upload.submit();
     }
+}
+
+function tampil_abstrak () {
+    let kategori = document.getElementById('kategori');
+    let abstrak = document.getElementById('abstrak');
+    if (kategori.value == 'jurnal') {
+        abstrak.style.display = '';
+    } else {
+        abstrak.style.display = 'none';
+    }
+    //console.log(kategori.value);
 }
 </script>
 

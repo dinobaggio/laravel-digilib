@@ -8,21 +8,11 @@
 @section('content')
 
 <style>
-.wrapper {
-    padding:1em;
-    display:grid;
-    /*grid-template-columns: 50% 50%;*/
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap:1em;
-    grid-auto-rows: minmax(50px, auto);
-}
-.wrapper > div {
-    background: #eee;
-    padding: 1em;
-}
-
-.wrapper > div:nth-child(odd) {
-    background:#ddd;
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 </style>
 
@@ -35,20 +25,31 @@
         @endif
     </form>
 </div>
-
+<br>
 @if ($files)
-<div class="wrapper">
+<div class="row">
     @foreach ($files as $file)
-        <div>
-            <h3><a href="{{ route('admin.file', ['file_id'=> $file->id_file]) }}">{{$file->judul}}</a></h3>
-            <center>
-                <div style="font-size:3em;" ><i class="fas fa-book"></i></div>
-            </center>
-            <p><b>Kategori :</b> {{$file->kategori}}</p>
+        <div class="col-md-4">
+            <div class="card mb-4 box-shadow" >
+                <div class="container">
+                    <center><div style="font-size:3em;" ><i class="fas fa-book"></i></div></center>
+                </div>
+                
+                    <div class="card-body" >
+                        <h3>{{$file->judul}}<a href="{{ route('admin.file', ['file_id'=> $file->id_file]) }}"></a></h3>
+                        <p></p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="halaman('{{ route('admin.file', ['file_id'=> $file->id_file]) }}')">View</button>
+                            </div>
+                            <small class="text-muted"><b>Kategori :</b> {{$file->kategori}}</small>
+                        </div>
+                    </div>
+            </div>
         </div>
     @endforeach
 </div>
-<div class="paginator" align="center">{{ $files->appends(request()->query())->links() }}</div> 
+<div class="pagination justify-content-center" >{{ $files->appends(request()->query())->links() }}</div> 
 @else
 
 <div>

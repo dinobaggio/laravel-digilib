@@ -9,18 +9,16 @@ class File extends Model
     public static function list_file ($cari = '') {
         $page = 5;
         if ($cari != '') {
-            $files = self::join('books', 'files.id_file', '=', 'books.id_book')
-            ->select('files.id_file', 'books.judul', 'files.nama_asli', 'files.size', 'files.kategori', 'files.path')
+            $files = self::select('id_file', 'judul', 'nama_asli', 'size', 'kategori', 'path')
             ->where('judul', 'LIKE', "%$cari%")
             ->orWhere('nama_asli', 'LIKE', "%$cari%")
-            ->orderBy('books.judul', 'asc')
+            ->orderBy('judul', 'asc')
             ->paginate($page);
             return $files;
         }
 
-        $files = self::join('books', 'files.id_file', '=', 'books.id_book')
-        ->select('files.id_file', 'books.judul', 'files.size', 'files.kategori', 'files.path')
-        ->orderBy('books.judul', 'asc')
+        $files = self::select('id_file', 'judul', 'size', 'kategori', 'path')
+        ->orderBy('judul', 'asc')
         ->paginate($page);
         return $files;
     }
@@ -29,18 +27,16 @@ class File extends Model
         $page = 6;
         
         if ($cari != '') {
-            $files = self::join('books', 'files.id_file', '=', 'books.id_book')
-            ->select('files.id_file', 'books.judul', 'files.nama_asli', 'files.size', 'files.kategori', 'files.path', 'files.extension')
+            $files = self::select('id_file', 'judul', 'nama_asli', 'size', 'kategori', 'path', 'extension')
             ->where('judul', 'LIKE', "%$cari%")
             ->orWhere('nama_asli', 'LIKE', "%$cari%")
-            ->orderBy('files.created_at', 'desc')
+            ->orderBy('created_at', 'desc')
             ->paginate($page);
             return $files;
         }
 
-        $files = self::join('books', 'files.id_file', '=', 'books.id_book')
-        ->select('files.id_file', 'books.judul', 'files.size', 'files.kategori', 'files.path')
-        ->orderBy('files.created_at', 'desc')
+        $files = self::select('id_file', 'judul', 'size', 'kategori', 'path')
+        ->orderBy('created_at', 'desc')
         ->paginate($page);
         return $files;
     }

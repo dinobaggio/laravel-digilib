@@ -12,6 +12,9 @@ use App\Book;
 use App\File;
 use App\User;
 use App\Role;
+use App\Jurnal;
+use App\Artikel;
+use App\Skripsi;
 
 class AdminControllers extends Controller
 {
@@ -60,17 +63,34 @@ class AdminControllers extends Controller
         if ($file == true) {
             if ($file->kategori == 'ebook') {
                 $book = Book::detail_ebook($id_file);
-                $book->encode = base64_encode(Storage::get($book->path));
                 $data = array(
-                    'book' => $book
+                    'file' => $book
                 );
-                return view('admin.detail_ebook.v_detail_ebook', $data);
+                return view('admin.detail_file.v_detail_file', $data);
+            } else if ($file->kategori == 'jurnal') {
+                $jurnal = Jurnal::detail_jurnal($id_file);
+                $data = array(
+                    'file' => $jurnal
+                );
+                return view('admin.detail_file.v_detail_file', $data);
+            } else if ($file->kategori == 'artikel') {
+                $artikel = Artikel::detail_artikel($id_file);
+                $data = array(
+                    'file' => $artikel
+                );
+                return view('admin.detail_file.v_detail_file', $data);
+            } else if ($file->kategori == 'skripsi') {
+                $skripsi = Skripsi::detail_skripsi($id_file);
+                $data = array(
+                    'file' => $skripsi
+                );
+                return view('admin.detail_file.v_detail_file', $data);
             }
         } else {
             $data = array(
                 'book' => false
             );
-            return view('admin.detail_ebook.v_detail_ebook', $data);
+            return view('admin.detail_file.v_detail_file', $data);
         }
     }
 
@@ -87,6 +107,24 @@ class AdminControllers extends Controller
                 Book::delete_ebook($id_file);
                 File::delete_file($id_file);
                 return redirect()->route('admin.list_file');
+            } else if ($file->kategori == 'jurnal') {
+                $jurnal = Jurnal::detail_jurnal($id_file);
+                Storage::delete($jurnal->path);
+                Jurnal::delete_jurnal($id_file);
+                File::delete_file($id_file);
+                return redirect()->route('admin.list_file');
+            } else if ($file->kategori == 'artikel') {
+                $artikel = Artikel::detail_artikel($id_file);
+                Storage::delete($artikel->path);
+                Artikel::delete_artikel($id_file);
+                File::delete_file($id_file);
+                return redirect()->route('admin.list_file');
+            } else if ($file->kategori == 'skripsi') {
+                $skripsi = Skripsi::detail_skripsi($id_file);
+                Storage::delete($skripsi->path);
+                Skripsi::delete_skripsi($id_file);
+                File::delete_file($id_file);
+                return redirect()->route('admin.list_file');
             }
         }
     }
@@ -96,17 +134,35 @@ class AdminControllers extends Controller
         $this->author_admin($req);
 
         $file = File::detail_file($id_file);
-        if ($file) :
-            if ($file->kategori == 'ebook') :
+        if ($file) {
+            if ($file->kategori == 'ebook') {
                 $book = Book::detail_ebook($id_file);
                 $data = array(
-                    'book' => $book
+                    'file' => $book
                 );
-                return view('admin.edit_ebook.v_edit_ebook', $data);
-            endif;
-        else :
+                return view('admin.edit_file.v_edit_file', $data);
+            } else if ($file->kategori == 'jurnal') {
+                $jurnal = Jurnal::detail_jurnal($id_file);
+                $data = array (
+                    'file' => $jurnal
+                );
+                return view('admin.edit_file.v_edit_file', $data);
+            } else if ($file->kategori == 'artikel') {
+                $artikel = Artikel::detail_artikel($id_file);
+                $data = array (
+                    'file' => $artikel
+                );
+                return view('admin.edit_file.v_edit_file', $data);
+            } else if ($file->kategori == 'skripsi') {
+                $skripsi = Skripsi::detail_skripsi($id_file);
+                $data = array (
+                    'file' => $skripsi
+                );
+                return view('admin.edit_file.v_edit_file', $data);
+            }
+        } else {
             return redirect()->route('list_file');
-        endif;
+        }
     }
 
     public function edit_proses (Request $req) {
@@ -114,8 +170,18 @@ class AdminControllers extends Controller
 
         $id_file = $req->input('id_file');
         $file = File::detail_file($id_file);
-        if ($file->kategori == 'ebook') {
+        if ($file->kategori == 'jurnal') {
             
+            $validasi = $req->validate(
+                [
+                    'abstrak' => 'required',
+                    'id_file' => 'required',
+                    'judul' => 'required',
+                    'kategori' => 'required'
+                ]
+            );
+            $abstrak = $req->input('abstrak');
+        } else {
             $validasi = $req->validate(
                 [
                     'id_file' => 'required',
@@ -123,6 +189,7 @@ class AdminControllers extends Controller
                     'kategori' => 'required'
                 ]
             );
+        }
 
             $judul = $req->input('judul');
             $kategori = $req->input('kategori');
@@ -141,45 +208,92 @@ class AdminControllers extends Controller
                 
                 File::where('id_file', $id_file)
                 ->update(array(
-                        'kategori' => $kategori,
                         'size' => $size,
                         'mime_file' => $mime_file,
                         'nama_asli' => $nama_asli,
                         'hash_name' => $hash_name,
                         'extension' => $extension,
-                        'path' => $path,
-                        'updated_at' => $cdate
+                        'path' => $path
                     ));
             }
 
             if ($kategori == 'ebook') {
-                Book::where('id_file', $id_file)
+                File::where('id_file', $id_file)
                 ->update(array(
                     'judul' => $judul,
+                    'kategori' => $kategori,
+                    'updated_at' => $cdate
+                ));
+                Book::where('id_file', $id_file)
+                ->update(array(
+                    'updated_at' => $cdate
+                ));
+            } else if ($kategori == 'jurnal') {
+                File::where('id_file', $id_file)
+                ->update(array(
+                    'judul' => $judul,
+                    'kategori' => $kategori,
+                    'updated_at' => $cdate
+                ));
+                Jurnal::where('id_file', $id_file)
+                ->update(array(
+                    'abstrak' => $abstrak,
+                    'updated_at' => $cdate
+                ));
+            } else if ($kategori == 'artikel') {
+                File::where('id_file', $id_file)
+                ->update(array(
+                    'judul' => $judul,
+                    'kategori' => $kategori,
+                    'updated_at' => $cdate
+                ));
+                Artikel::where('id_file', $id_file)
+                ->update(array(
+                    'updated_at' => $cdate
+                ));
+            } else if ($kategori == 'skripsi') {
+                File::where('id_file', $id_file)
+                ->update(array(
+                    'judul' => $judul,
+                    'kategori' => $kategori,
+                    'updated_at' => $cdate
+                ));
+                Skripsi::where('id_file', $id_file)
+                ->update(array(
                     'updated_at' => $cdate
                 ));
             }
 
             return redirect()->route('admin.file', array('file_id'=>$id_file));
-
-        }
-        
         
     }
 
     public function upload_proses(Request $req) {
         $this->author_admin($req);
-
-        $validasi = $req->validate(
-            [
-                'judul' => 'required',
-                'kategori' => 'required',
-                'file_data' => 'required'
-            ]
-        );
-        
-        $judul = $req->input('judul');
         $kategori = $req->input('kategori');
+
+        if ($kategori == 'jurnal') {
+            $validasi = $req->validate(
+                [
+                    'judul' => 'required',
+                    'kategori' => 'required',
+                    'file_data' => 'required',
+                    'abstrak' => 'required'
+                ]
+            );
+            $abstrak = $req->input('abstrak');
+        } else {
+            $validasi = $req->validate(
+                [
+                    'judul' => 'required',
+                    'kategori' => 'required',
+                    'file_data' => 'required'
+                ]
+            );
+        }
+
+
+        $judul = $req->input('judul');
         $file_data = $req->file('file_data');
         $size = $file_data->getClientSize();
         $mime_file = $file_data->getMimeType();
@@ -202,6 +316,7 @@ class AdminControllers extends Controller
 
         $id_file = File::insertGetId(
             array(
+                'judul' => $judul,
                 'kategori' => $kategori,
                 'size' => $size,
                 'mime_file' => $mime_file,
@@ -212,13 +327,29 @@ class AdminControllers extends Controller
                 'created_at'=>$cdate
             )
         );
-        if ($kategori == "ebook") :
+        if ($kategori == "ebook") {
             Book::insert(array(
                 'id_file' => $id_file,
-                'judul' => $judul,
                 'created_at'=>$cdate
             ));
-        endif;
+        } else if ($kategori == 'jurnal') {
+            Jurnal::insert(array(
+                'id_file' => $id_file,
+                'abstrak' => $abstrak,
+                'created_at' => $cdate
+            ));
+        } else if ($kategori == 'artikel') {
+            Artikel::insert(array (
+                'id_file' => $id_file,
+                'created_at'=>$cdate
+            ));
+        } else if ($kategori == 'skripsi') {
+            Skripsi::insert(array (
+                'id_file' => $id_file,
+                'created_at'=>$cdate
+            ));
+        }
+
         return redirect()->route('admin.file', array('file_id'=>$id_file));
     }
 

@@ -9,6 +9,8 @@ use App\Http\Requests\UploadFormRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Book;
 use App\File;
+use App\Jurnal;
+use App\Artikel;
 
 class NonUserControllers extends Controller
 {
@@ -43,18 +45,29 @@ class NonUserControllers extends Controller
         $file = File::detail_file($id_file);
         if ($file == true) {
             if ($file->kategori == 'ebook') {
-                $book = Book::detail_ebook($id_file);
-                $book->encode = base64_encode(Storage::get($book->path));
+                $book = Book::detail_ebook_non_user($id_file);
                 $data = array(
-                    'book' => $book
+                    'file' => $book
                 );
-                return view('non_user.detail_ebook.v_detail_ebook', $data);
+                return view('non_user.detail_file.v_detail_file', $data);
+            } else if ($file->kategori == 'jurnal') {
+                $jurnal = Jurnal::detail_jurnal_non_user($id_file);
+                $data = array(
+                    'file' => $jurnal
+                );
+                return view('non_user.detail_file.v_detail_file', $data);
+            } else if ($file->kategori == 'artikel') {
+                $artikel = Artikel::detail_artikel_non_user($id_file);
+                $data = array(
+                    'file' => $artikel
+                );
+                return view('non_user.detail_file.v_detail_file', $data);
             }
         } else {
             $data = array(
                 'book' => false
             );
-            return view('non_user.detail_ebook.v_detail_ebook', $data);
+            return view('non_user.detail_file.v_detail_file', $data);
         }
     }
 

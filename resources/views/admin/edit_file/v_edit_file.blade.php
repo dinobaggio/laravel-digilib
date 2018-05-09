@@ -1,5 +1,5 @@
 @extends('base.v_master')
-@section('title', $book->judul)
+@section('title', $file->judul)
 
 @section('nav_bar')
     @include('base.nav_admin')
@@ -10,22 +10,18 @@
 <div id="form_edit_file">
     <form method="POST" action="{{ route('admin.edit_proses') }}" id="form_edit" enctype="multipart/form-data">
     @csrf 
-    <input type="hidden" value="{{ $book->id_file }}" name="id_file">
+    <input type="hidden" value="{{ $file->id_file }}" name="id_file">
         <table>
-            <tr><td>Judul: </td><td><input type="text" name="judul" value="{{ $book->judul }}" placeholder="Judul ..." /></td></tr>
-            <tr><td>kategori: </td><td>
-                <select id="kategori" name="kategori">
-                    <option value=""  >Masukan Kategori ...</option>
-                    @if ($book->kategori == 'ebook')
-                        <option value="ebook" selected>E-Book</option>
-                    @else
-                        <option value="ebook">E-Book</option>
-                    @endif
-                    <!-- <option value="jurnal">Jurnal</option>
-                    <option value="artikel">Artikel</option>
-                    <option value="skripsi">Skripsi</option> -->
-                </select>
+            <tr><td>Judul: </td><td><input type="text" name="judul" value="{{ $file->judul }}" placeholder="Judul ..." /></td></tr>
+            <tr><td>Kategori: </td><td> <input type="hidden" name="kategori" value="{{ $file->kategori }}">
+                <b>{{ $file->kategori }}</b>
             </td></tr>
+            @if ($file->kategori == 'jurnal') 
+            <tr id="abstrak">
+                <td>Abstrak</td>
+                <td><textarea name="abstrak" placeholder="Abstrak jurnal ..." rows='4' cols='30'>{{$file->abstrak}}</textarea></td>
+            </tr>
+            @endif
             <!-- 
             <tr><td>Pengarang: </td><td><input type="text" name="pengarang" placeholder="Pengarang ..." /></td></tr>
             <tr><td>Bahasa: </td><td><input type="text" name="bahasa" placeholder="Bahasa ..." /></td></tr>
@@ -52,6 +48,8 @@
 
 
 <script>
+
+
 function edit_proses () {
     let form_edit = document.getElementById('form_edit');
     let yakin = confirm('yakin ingin proses edit file?');
@@ -59,6 +57,8 @@ function edit_proses () {
         form_edit.submit();
     }
 }
+
+
 
 function view (url) {
     window.open(url, '_self')
