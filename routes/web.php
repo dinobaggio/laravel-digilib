@@ -11,9 +11,15 @@
 |
 */
 
+use App\Http\Controllers\NonUserControllers;
+
+
 Route::get('/', 'NonUserControllers@index')->name('non_user.homepage');
 Route::get('/detail_file/{id_file}', 'NonUserControllers@detail_file')->name('non_user.file');
+Auth::routes();
+Route::get('/pros_login', 'NonUserControllers@pros_login')->name('non_user.pros_login');
 
+// ADMIN
 Route::prefix('admin')->group(function () {
 
     Route::get('/', 'AdminControllers@index')->name('admin.homepage');
@@ -49,6 +55,6 @@ Route::prefix('admin')->group(function () {
 
 
 
-Auth::routes();
+
 
 Route::get('/home', 'HomeController@index')->name('home');

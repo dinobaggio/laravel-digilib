@@ -25,7 +25,9 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected function redirectTo() {
+        return route('non_user.pros_login');
+    }
 
     /**
      * Create a new controller instance.
