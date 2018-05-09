@@ -12,6 +12,10 @@ use App\File;
 
 class NonUserControllers extends Controller
 {
+    public function __construct(){
+        
+        
+    }
     public function index () {
         $req = request();
         if (Auth::check()) {
