@@ -89,13 +89,15 @@
 
     <div id="main2" class="main2">
         <h2>{{ $file->judul }}</h2>
-        <button onclick="lihat_file('{{ Storage::url($file->path) }}', '{{ $file->extension }}')">lihat file</button>
-        <form id="form_download" method="post" action="{{ route('admin.download_file') }}" target="_blank" style="display:inline;">
-            @csrf
-            <input type="hidden" name="path" value="{{ $file->path }}">
-            <input type="hidden" name="nama_asli" value="{{ $file->nama_asli }}">
-            <button type="submit" >download</button>
-        </form> 
+        <div id="div_button" >
+            <button onclick="lihat_file('{{ Storage::url($file->path) }}', '{{ $file->extension }}')" class="btn btn-primary">lihat file</button>
+            <form id="form_download" method="post" action="{{ route('admin.download_file') }}" target="_blank" style="display:inline;">
+                @csrf
+                <input type="hidden" name="path" value="{{ $file->path }}">
+                <input type="hidden" name="nama_asli" value="{{ $file->nama_asli }}">
+                <button type="submit" class="btn btn-success">download</button>
+            </form> 
+        </div>
         <br/>
         <br/>
         
@@ -117,6 +119,7 @@ function view( url ) {
 function lihat_file (path, extension) {
     let file_iframe = document.getElementById('file_iframe');
     if (file_iframe == null && extension == 'pdf') {
+        let div_button = document.getElementById('div_button');
         let tutup = document.createElement('button');
         let text_tutup = document.createTextNode('tutup');
         let full = document.createElement('button');
@@ -128,11 +131,13 @@ function lihat_file (path, extension) {
         tutup.setAttribute('onclick', 'tutup_file()');
         tutup.setAttribute('id', 'tutup_button');
         tutup.setAttribute('style', 'margin-bottom:10px');
+        tutup.setAttribute('class', 'btn btn-danger');
 
         full.appendChild(text_full);
         full.setAttribute('onclick', 'full_file()');
         full.setAttribute('id', 'full_button');
         full.setAttribute('style', 'margin-bottom:10px');
+        full.setAttribute('class', 'btn btn-primary');
 
         iframe.setAttribute('id', 'file_iframe');
         iframe.setAttribute('style', 'width:100%;height:650px;');
@@ -141,6 +146,8 @@ function lihat_file (path, extension) {
         main2.appendChild(tutup);
         main2.appendChild(full);
         main2.appendChild(iframe);
+
+        div_button.style.display = 'none';
     } else {
         if (extension != 'pdf') {
             alert('maaf file tidak bisa ditampilkan \nformat extension bukan pdf');
@@ -151,6 +158,7 @@ function lihat_file (path, extension) {
 }
 
 function tutup_file () {
+    let div_button = document.getElementById('div_button');
     let main1 = document.getElementById('main1');
     let main2 = document.getElementById('main2');
     let tutup = document.getElementById('tutup_button');
@@ -162,6 +170,8 @@ function tutup_file () {
     main2.removeChild(iframe);
     main1.style.display = '';
     main2.style.width = '';
+
+    div_button.style.display = '';
 }
 
 function full_file () {
