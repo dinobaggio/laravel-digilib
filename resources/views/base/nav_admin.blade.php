@@ -30,38 +30,62 @@
   </div>
 </nav> -->
 
-
+<style>
+  .wrapper {
+    display:grid;
+    grid-template-columns: 70% 30%;
+  }
+</style>
 
 <nav class="col-md-2 d-none d-md-block bg-secondary sidebar pt-3">
-    <div class="sidebar-sticky">
+    <div class="sidebar-sticky" style="margin:-1em">
       <ul class="nav flex-column">
-        <li class="nav-item">
+        <li class="nav-item border-bottom border-light">
           <a class="nav-link text-light" href="javascript:halaman('{{ route('admin.homepage') }}')">
-            <span data-feather="home"></span>
             Home
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link text-light" href="javascript:halaman('{{ route('admin.list_file') }}')">
-            <span data-feather="file"></span>
-            List File
-          </a>
+        <li class="nav-item border-bottom border-light ">
+          <div class="wrapper">
+            <a class="nav-link text-light border-right" href="javascript:halaman('{{ route('admin.list_file') }}')">
+              List File
+            </a>
+            <a class="nav-link text-light" href="javascript:void(0)" onclick="list_file()">
+              <center>
+                <i id="plus" class="fas fa-plus"></i>
+                <i id="minus" class="fas fa-minus" style="display:none;"></i>
+              </center>
+            </a>
+          </div>
+
+          <div id="kategori" class="pl-3" style="display:none">
+            <a class="nav-link text-light border-right" href="javascript:void(0)">
+              Ebook
+            </a>
+            <a class="nav-link text-light border-right" href="javascript:void(0)">
+              Jurnal
+            </a>
+            <a class="nav-link text-light border-right" href="javascript:void(0)">
+              Artikel
+            </a>
+            <a class="nav-link text-light border-right" href="javascript:void(0)">
+              Skripsi
+            </a>
+          </div>
+          
         </li>
-        <li class="nav-item">
-          <a class="nav-link text-light" href="javascript:halaman('{{ route('admin.form_upload') }}')">
-            <span data-feather="shopping-cart"></span>
+        <li class="nav-item border-bottom border-light">
+          <a  class="nav-link text-light" href="javascript:halaman('{{ route('admin.form_upload') }}')">
             Upload
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item border-bottom border-light">
           <a class="nav-link text-light" href="javascript:halaman('{{ route('admin.form_tambah_user') }}')">
-            <span data-feather="users"></span>
             Tambah User
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item border-bottom border-light">
           <a class="nav-link text-light" href="javascript:void(0)" onclick="event.preventDefault();document.getElementById('logout-form').submit()">
-            <span data-feather="bar-chart-2"></span>
             Logout
           </a>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -72,3 +96,33 @@
       
     </div>
   </nav>
+
+
+  <script>
+  function list_file () {
+    let plus = $('#plus');
+    let minus = $('#minus');
+    let kategori = $('#kategori');
+    plus.toggle();
+    minus.toggle();
+    kategori.toggle('slow');
+  }
+
+  console.log(postRequest("http://localhost:8000/admin"));
+
+  function postRequest (url) {
+    var data = null;
+    var http = new XMLHttpRequest();
+    http.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        var value = this.response;
+        data = value;
+      }
+    }
+    http.open("GET", url);
+    http.send();
+
+    return data;
+    
+  }
+  </script>
