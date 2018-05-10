@@ -1,7 +1,7 @@
 # laravel-digilib
 
 simple digital library
-belum ada templatenya
+
 
 # Installation
 
@@ -14,4 +14,5 @@ php artisan storage:link
 # User
 
 email : admin@example.com
+
 password : secret
