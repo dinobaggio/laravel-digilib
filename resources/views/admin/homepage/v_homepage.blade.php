@@ -17,11 +17,13 @@
 </style>
 
 <div id="input_cari">
-    <form action="{{ route('admin.homepage') }}" style="display:inline;">
+    <form class="form-inline my-2 my-lg-0">
         @if ($cari != '')
-            <input type="text" name="cari" value="{{ $cari }}" /> <input type="submit" value="cari">
+            <input class="form-control mr-sm-2" name="cari" value="{{ $cari }}" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>
         @else
-            <input type="text" name="cari" /> <input type="submit" value="cari">
+            <input class="form-control mr-sm-2" name="cari" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-scondary my-2 my-sm-0" type="submit">Search</button>
         @endif
     </form>
 </div>
@@ -29,20 +31,20 @@
 @if ($files)
 <div class="row">
     @foreach ($files as $file)
-        <div class="col-md-4">
+        <div class="col-md-4 ">
             <div class="card mb-4 box-shadow" >
-                <div class="container">
-                    <center><div style="font-size:3em;" ><i class="fas fa-book"></i></div></center>
+                <div class="container bg-dark" style="height:100px;">
+                    <center><div class="text-light" style="font-size:3em;padding-top:5%" ><i class="fas fa-book"></i></div></center>
                 </div>
                 
                     <div class="card-body" >
-                        <h3>{{$file->judul}}<a href="{{ route('admin.file', ['file_id'=> $file->id_file]) }}"></a></h3>
-                        <p></p>
+                        <h4><a class="nav-link" href="{{ route('admin.file', ['file_id'=> $file->id_file]) }}">{{$file->judul}}</a></h4>
+                        <p><b>Kategori :</b> {{ $file->kategori }} </p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
                             <button type="button" class="btn btn-sm btn-outline-secondary" onclick="halaman('{{ route('admin.file', ['file_id'=> $file->id_file]) }}')">View</button>
                             </div>
-                            <small class="text-muted"><b>Kategori :</b> {{$file->kategori}}</small>
+                            <small class="text-muted">{{ time_elapsed_string($file->created_at)}}</small>
                         </div>
                     </div>
             </div>
@@ -57,3 +59,6 @@
 </div>
 @endif
 @endsection('content')
+
+
+

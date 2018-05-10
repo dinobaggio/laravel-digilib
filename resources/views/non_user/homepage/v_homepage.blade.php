@@ -1,4 +1,4 @@
-@extends('base.v_master')
+@extends('base.v_master_non')
 @section('title', 'Selamat datang di digilib')
 
 @section('nav_bar')

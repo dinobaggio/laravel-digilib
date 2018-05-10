@@ -13,15 +13,9 @@
     <link href="{{ URL::asset('css/album.css') }}" rel="stylesheet">
 </head>
 <body class="bg-light">
-<nav class="navbar navbar-light bg-light">
-  <span class="navbar-brand">Navbar</span>
-</nav>
-<div class="container-fluid">
-    <div class="row">
-        
             @yield('nav_bar')
         
-        <main class="col-md-9 ml-sm-auto col-lg-10 px-4" role="main" style="min-height: 650px;">
+        <main role="main" style="min-height: 650px;">
             <div class="album">
                 <div class="container">
                     <div>
@@ -34,8 +28,7 @@
                 </div>
             </div>
         </main>
-    </div>
-</div>
+
 
     <script src="{{ URL::asset('js/jquery-3.3.1.slim.min.js') }}"></script>
     <script src="{{ URL::asset('js/vendor/popper.min.js') }}"></script>

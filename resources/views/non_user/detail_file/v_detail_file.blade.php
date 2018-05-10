@@ -1,4 +1,4 @@
-@extends('base.v_master')
+@extends('base.v_master_non')
 @section('title', 'Detail File')
 
 
