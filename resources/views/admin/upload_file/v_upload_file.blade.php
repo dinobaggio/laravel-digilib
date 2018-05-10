@@ -10,46 +10,68 @@
 <div id="form_upload_file">
     <form method="POST" action="{{ route('admin.upload_proses') }}" id="form_upload" enctype="multipart/form-data">
     {{csrf_field()}}
-        <table>
-            <tr><td>Judul: </td><td><input type="text" name="judul" placeholder="Judul ..." /></td></tr>
-            <tr><td>kategori: </td><td>
-                <select id="kategori" name="kategori" onchange="tampil_abstrak()"> 
-                    <option value=""  >Masukan Kategori ...</option>
+    
+        <div class="form-group row">
+            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Judul') }}</label>
+
+            <div class="col-md-6">
+                <input id="judul" type="text" class="form-control" name="judul" value="{{ old('judul') }}" placeholder="Judul" autofocus>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="kategori" class="col-md-4 col-form-label text-md-right">{{ __('Kategori') }}</label>
+            <div class="col-md-6">
+                <select name="kategori" id="kategori" class="form-control" value="{{ old('kategori') }}" onchange="tampil_abstrak()">
+                    <option value="">Pilih Kategori</option>
                     <option value="ebook">E-Book</option>
                     <option value="jurnal">Jurnal</option>
                     <option value="artikel">Artikel</option>
                     <option value="skripsi">Skripsi</option>
                 </select>
-            </td></tr>
-            <tr id="abstrak" style="display:none;">
-                <td>Abstrak</td>
-                <td><textarea name="abstrak" placeholder="Abstrak jurnal ..." rows='4' cols='30'></textarea></td>
-            </tr>
-            <!-- 
-            <tr><td>Pengarang: </td><td><input type="text" name="pengarang" placeholder="Pengarang ..." /></td></tr>
-            <tr><td>Bahasa: </td><td><input type="text" name="bahasa" placeholder="Bahasa ..." /></td></tr>
-            <tr><td>Penerbit: </td><td><input type="text" name="penerbit" placeholder="Penerbit ..." /></td></tr>
-            <tr><td>Tahun Penerbit: </td><td><input type="text" name="tahun_penerbit" placeholder="Tahun Penerbit ..." /></td></tr>
-            <tr><td>Tempat Penerbit: </td><td><input type="text" name="tempat_penerbit" placeholder="Tempat Penerbit ..." /></td></tr>
-            <tr><td>Info Detail Spesifik: </td><td><textarea name="info_detail" placeholder="Info dan Detail ..." rows='4' cols='30'></textarea></td></tr> -->
-            <input type="hidden" name="MAX_FILE_SIZE" value="500000000">
-            <tr><td>Lampiran Berkas: </td><td><input type="file" name="file_data"/></td></tr>
-            <tr><td colspan='2'><input type="submit" onclick="upload_proses()" formaction="javascript:void(0)" value="Simpan"></td></tr>
-        </table>
+            </div>
+        </div>
+
+        <div class="form-group row" id="abstrak" style="display:none;">
+            <label for="abstrak" class="col-md-4 col-form-label text-md-right">{{ __('Abstrak') }}</label>
+
+            <div class="col-md-6">
+                <textarea id="abstrak" type="text" class="form-control" name="abstrak" value="{{ old('abstrak') }}" placeholder="Abstrak" > </textarea>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="abstrak" class="col-md-4 col-form-label text-md-right">{{ __('File') }}</label>
+
+            <div class="col-md-6">
+                <input id="file_data" type="file" class="form-control" name="file_data">
+            </div>
+        </div>
+
+        <div class="form-group row mb-0">
+            <div class="col-md-6 offset-md-4">
+                <button type="submit" class="btn btn-success">
+                    {{ __('Upload') }}
+                </button>
+            </div>
+        </div>
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
     </form>
 </div>
 
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+
 
 <script>
+tampil_abstrak();
 function upload_proses () {
     let form_upload = document.getElementById('form_upload');
     let yakin = confirm('yakin ingin proses upload file?');

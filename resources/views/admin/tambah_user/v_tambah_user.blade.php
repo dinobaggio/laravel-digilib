@@ -44,7 +44,7 @@
             <label for="role" class="col-md-4 col-form-label text-md-right">{{ __('Role') }}</label>
 
             <div class="col-md-6">
-                <select name="role" id="role" required>
+                <select name="role" id="role"  class="form-control{{ $errors->has('role') ? ' is-invalid' : '' }}" required>
                     <option value="">Pilih Role</option>
                     <option value="admin">Admin</option>
                     <option value="dosen">Dosen</option>

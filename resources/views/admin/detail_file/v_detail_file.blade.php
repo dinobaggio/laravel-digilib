@@ -11,39 +11,80 @@
 
 <div id="detail_book" style="overflow:auto">
 @if ($file)
-    <div id="main1" class="main1">
-        
-            <p><b>Judul :</b> {{ $file->judul }}</p>
-            <p><b>Kategori :</b> {{ $file->kategori }}</p>
-            
+    <div id="main1" class="card main1">
+        <div class="card-body">
+            <h5 class="card-title">{{ $file->judul }}</h5>
+            <p class="card-text"></p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <b>Kategori :</b><br>
+                {{ $file->kategori }}
+            </li>
             @if($file->kategori == 'jurnal')
-                <p><b>Abstrak :</b> {{$file->abstrak}}</p>
+            <li class="list-group-item">
+                <b>Abstrak :</b><br>
+                {{$file->abstrak}}
+            </li>
             @endif
-
-            <p><b>Size :</b> {{ human_filesize($file->size) }}</p> 
-            <p><b>Mime Type :</b> {{ $file->mime_file }}</p>
-            <p><b>Nama Asli :</b> {{ $file->nama_asli }}</p>
-            <p><b>Hash Name :</b> {{ $file->hash_name }}</p>
-            <p><b>Extension :</b> {{ $file->extension }}</p>
-
+            <li class="list-group-item">
+                <b>Size :</b><br>
+                {{ human_filesize($file->size) }}
+            </li>
+            <li class="list-group-item">
+                <b>Mime Type :</b><br>
+                {{ $file->mime_file }}
+            </li>
+            <li class="list-group-item">
+                <b>Nama Asli :</b><br>
+                {{ $file->nama_asli }}
+            </li>
+            <li class="list-group-item">
+                <b>Hash Name :</b><br>
+                {{ $file->hash_name }}
+            </li>
+            <li class="list-group-item">
+                <b>Extension :</b><br>
+                {{ $file->extension }}
+            </li>
             @if($file->kategori == 'jurnal')
-                <p><b>ID Jurnal :</b> #{{$file->id_jurnal}}</p>
+                <li class="list-group-item">
+                    <b>ID Jurnal :</b><br>
+                    #{{$file->id_jurnal}}
+                </li>
             @elseif($file->kategori == 'ebook')
-                <p><b>ID Book :</b> #{{ $file->id_book }}</p>
+                <li class="list-group-item">
+                    <b>ID Book :</b><br>
+                    #{{$file->id_book}}
+                </li>
             @elseif($file->kategori == 'artikel')
-                <p><b>ID Artikel :</b> #{{ $file->id_artikel }}</p>
+                <li class="list-group-item">
+                    <b>ID Artikel :</b><br>
+                    #{{$file->id_artikel}}
+                </li>
             @elseif($file->kategori == 'skripsi')
-                <p><b>ID Skripsi :</b> #{{ $file->id_skripsi }}</p>
+                <li class="list-group-item">
+                    <b>ID Skripsi :</b><br>
+                    #{{$file->id_skripsi}}
+                </li>
             @endif 
-            
-            <p><b>ID File :</b> #{{ $file->id_file }}</p>                   
-            <p><b>Path :</b> <a  href="{{ Storage::url($file->path) }}">{{ $file->path }}</a></p> <hr>
-            <form id="form_delete" method="post" action="{{route('admin.delete_file', ['file_id'=>$file->id_file])}}" style="display:inline;">
-                @method('delete')
-                @csrf
-                <button onclick="form_delete_submit()" formaction="javascript:void(0)">delete</button>
-            </form>
-            <button onclick="view('{{ route('admin.edit_file', array('file_id'=>$file->id_file)) }}')" >edit</button>
+            <li class="list-group-item">
+                <b>ID File :</b><br>
+                #{{$file->id_file}}
+            </li>
+            <li class="list-group-item">
+                <b>Path :</b><br>
+                <a  href="{{ Storage::url($file->path) }}">{{ $file->path }}</a>
+            </li>
+        </ul>
+        <div class="card-body">
+            <a href="javascript:void(0)" onclick="form_delete_submit()" class="btn btn-danger" role="button">Delete</a>
+            <a href="javascript:void(0)" onclick="view('{{ route('admin.edit_file', array('file_id'=>$file->id_file)) }}')" class="btn btn-primary">Edit</a>
+        </div>
+        <form id="form_delete" method="post" action="{{route('admin.delete_file', ['file_id'=>$file->id_file])}}" style="display:inline;">
+            @method('delete')
+            @csrf
+        </form>
     </div>
 
     <div id="main2" class="main2">

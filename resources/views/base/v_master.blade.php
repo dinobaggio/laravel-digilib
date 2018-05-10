@@ -14,7 +14,7 @@
 </head>
 <body class="bg-light">
 <nav class="navbar navbar-light bg-light">
-  <span class="navbar-brand">Navbar</span>
+  <span class="navbar-brand">Digilib</span>
 </nav>
 <div class="container-fluid">
     <div class="row">
