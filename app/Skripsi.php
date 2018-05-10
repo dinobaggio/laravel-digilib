@@ -15,7 +15,7 @@ class Skripsi extends Model
 
     public static function detail_skripsi_non_user ($id_file) {
         $skripsi = self::join('files', 'skripsis.id_file', '=', 'files.id_file')
-        ->select('files.id_file', 'files.judul', 'files.size', 'files.kategori')
+        ->select('files.id_file', 'files.judul', 'files.size', 'files.kategori', 'files.created_at')
         ->where('files.id_file', $id_file)
         ->first();
         return $skripsi;

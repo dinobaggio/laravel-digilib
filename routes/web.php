@@ -18,6 +18,7 @@ Route::get('/', 'NonUserControllers@index')->name('non_user.homepage');
 Route::get('/detail_file/{id_file}', 'NonUserControllers@detail_file')->name('non_user.file');
 Auth::routes();
 Route::get('/pros_login', 'NonUserControllers@pros_login')->name('non_user.pros_login');
+Route::get('/register', function () { return redirect()->route('login'); });
 
 // ADMIN
 Route::prefix('admin')->group(function () {

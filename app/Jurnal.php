@@ -15,7 +15,7 @@ class Jurnal extends Model
 
     public static function detail_jurnal_non_user ($id_file) {
         $jurnal = self::join('files', 'jurnals.id_file', '=', 'files.id_file')
-        ->select('files.judul', 'files.size', 'files.kategori', 'jurnals.abstrak')
+        ->select('files.judul', 'files.size', 'files.kategori', 'jurnals.abstrak', 'files.created_at')
         ->where('files.id_file', $id_file)
         ->first();
         return $jurnal;

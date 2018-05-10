@@ -15,7 +15,7 @@ class Artikel extends Model
 
     public static function detail_artikel_non_user ($id_file) {
         $artikel = self::join('files', 'artikels.id_file', '=', 'files.id_file')
-        ->select('files.judul', 'files.size', 'files.kategori')
+        ->select('files.judul', 'files.size', 'files.kategori', 'files.created_at')
         ->where('files.id_file', $id_file)
         ->first();
         return $artikel;

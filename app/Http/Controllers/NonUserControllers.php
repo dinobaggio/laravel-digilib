@@ -11,6 +11,7 @@ use App\Book;
 use App\File;
 use App\Jurnal;
 use App\Artikel;
+use App\Skripsi;
 
 class NonUserControllers extends Controller
 {
@@ -60,6 +61,12 @@ class NonUserControllers extends Controller
                 $artikel = Artikel::detail_artikel_non_user($id_file);
                 $data = array(
                     'file' => $artikel
+                );
+                return view('non_user.detail_file.v_detail_file', $data);
+            } else if ($file->kategori == 'skripsi') {
+                $skripsi = Skripsi::detail_skripsi_non_user($id_file);
+                $data = array(
+                    'file' => $skripsi
                 );
                 return view('non_user.detail_file.v_detail_file', $data);
             }
