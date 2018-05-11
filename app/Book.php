@@ -24,5 +24,6 @@ class Book extends Model
     public static function delete_ebook ($id_file) {
         $book = self::where('id_file', $id_file);
         $book->delete();
+        return true;
     }
 }

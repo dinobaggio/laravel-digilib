@@ -22,17 +22,52 @@
         <div class="form-group row">
             <label for="kategori" class="col-md-4 col-form-label text-md-right">{{ __('Kategori') }}</label>
             <div class="col-md-6">
-                <input type="hidden" name="kategori" value="{{ $file->kategori }}">
-                <b>{{ $file->kategori }}</b>
+                <select name="kategori" id="inptKategori" class="form-control" onchange="tampil_abstrak()">
+                    <option value="">Pilih Kategori</option>
+                    @if($file->kategori == 'ebook')
+                    <option value="ebook" selected>E-Book</option>
+                    <option value="jurnal">Jurnal</option>
+                    <option value="artikel">Artikel</option>
+                    <option value="skripsi">Skripsi</option>
+                    @elseif($file->kategori == 'jurnal')
+                    <option value="ebook">E-Book</option>
+                    <option value="jurnal" selected>Jurnal</option>
+                    <option value="artikel">Artikel</option>
+                    <option value="skripsi">Skripsi</option>
+                    @elseif($file->kategori == 'artikel')
+                    <option value="ebook">E-Book</option>
+                    <option value="jurnal">Jurnal</option>
+                    <option value="artikel" selected>Artikel</option>
+                    <option value="skripsi">Skripsi</option>
+                    @elseif($file->kategori == 'skripsi')
+                    <option value="ebook">E-Book</option>
+                    <option value="jurnal">Jurnal</option>
+                    <option value="artikel">Artikel</option>
+                    <option value="skripsi" selected>Skripsi</option>
+                    @else
+                    <option value="ebook">E-Book</option>
+                    <option value="jurnal">Jurnal</option>
+                    <option value="artikel">Artikel</option>
+                    <option value="skripsi">Skripsi</option>
+                    @endif
+                </select>
             </div>
         </div>
 
         @if ($file->kategori == 'jurnal') 
-        <div class="form-group row" id="abstrak" style="">
+        <div class="form-group row" id="divAbstrak" style="display:">
             <label for="abstrak" class="col-md-4 col-form-label text-md-right">{{ __('Abstrak') }}</label>
 
             <div class="col-md-6">
-                <textarea id="abstrak" type="text" class="form-control" name="abstrak" placeholder="Abstrak" > {{ $file->abstrak }}</textarea>
+                <textarea id="textabstrak" type="text" class="form-control" name="abstrak" placeholder="Abstrak" > {{ $file->abstrak }}</textarea>
+            </div>
+        </div>
+        @else
+        <div class="form-group row" id="divAbstrak" style="display:">
+            <label for="abstrak" class="col-md-4 col-form-label text-md-right">{{ __('Abstrak') }}</label>
+
+            <div class="col-md-6">
+                <textarea id="textabstrak" type="text" class="form-control" name="abstrak" placeholder="Abstrak" ></textarea>
             </div>
         </div>
         @endif
@@ -81,7 +116,7 @@
 
 <script>
 
-
+tampil_abstrak ();
 function edit_proses () {
     let form_edit = document.getElementById('form_edit');
     let yakin = confirm('yakin ingin proses edit file?');
@@ -90,7 +125,15 @@ function edit_proses () {
     }
 }
 
-
+function tampil_abstrak () {
+    let kategori = document.getElementById('inptKategori');
+    let abstrak = document.getElementById('divAbstrak');
+    if (kategori.value == 'jurnal') {
+        abstrak.style.display = '';
+    } else {
+        abstrak.style.display = 'none';
+    }
+}
 
 function view (url) {
     window.open(url, '_self')

@@ -26,7 +26,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/', 'AdminControllers@index')->name('admin.homepage');
 
     // SHOW FILE
-    Route::get('/list_file', 'AdminControllers@list_file')->name('admin.list_file');
+    
     Route::get('/file/{id_file}', 'AdminControllers@detail_file')->name('admin.file');
     Route::delete('/file/{id_file}', 'AdminControllers@delete_file')->name('admin.delete_file');
 
@@ -50,6 +50,27 @@ Route::prefix('admin')->group(function () {
     // TAMBAH USER
     Route::get('/tambah_user', 'AdminControllers@form_tambah_user')->name('admin.form_tambah_user');
     Route::post('/tambah_user', 'AdminControllers@tambah_user')->name('admin.tambah_user');
+    
+    Route::prefix('list_file')->group(function () {
+        // LIST FILE
+        Route::get('/', 'AdminControllers@list_file')->name('admin.list_file');
+
+        // LIST EBOOK
+        Route::get('/list_ebook', 'AdminControllers@list_ebook')->name('admin.list_ebook');
+
+        // LIST JURNAL
+        Route::get('/list_jurnal', 'AdminControllers@list_jurnal')->name('admin.list_jurnal');
+
+        // LIST ARTIKEL
+        Route::get('/list_artikel', 'AdminControllers@list_artikel')->name('admin.list_artikel');
+
+        // LIST SKRIPSI
+        Route::get('/list_skripsi', 'AdminControllers@list_skripsi')->name('admin.list_skripsi');
+    });
+    
+    
+
+    
 
 });
 

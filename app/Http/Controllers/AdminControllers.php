@@ -23,6 +23,8 @@ class AdminControllers extends Controller
         
     }
 
+    // INDEX
+
     public function index () {
         //dd(File::select('path')->get()[0]['path']);
 
@@ -40,6 +42,8 @@ class AdminControllers extends Controller
 
     }
 
+    // LIST FILE
+
     public function list_file () {
         $req = request();
         $this->author_admin($req);
@@ -54,6 +58,76 @@ class AdminControllers extends Controller
         return view('admin.list_file.v_list_file', $data);
         
     }
+
+    // LIST EBOOK
+
+    public function list_ebook () {
+        $req = request();
+        $this->author_admin($req);
+
+        $cari = trim_all(request()->input('cari'));
+        $cari = htmlspecialchars($cari);
+        $files = File::list_ebook($cari);
+        $data = array(
+            'files'=> $files,
+            'cari' => $cari
+        );
+        return view('admin.list_ebook.v_list_ebook', $data);
+        
+    }
+
+    // LIST JURNAL
+
+    public function list_jurnal () {
+        $req = request();
+        $this->author_admin($req);
+
+        $cari = trim_all(request()->input('cari'));
+        $cari = htmlspecialchars($cari);
+        $files = File::list_jurnal($cari);
+        $data = array(
+            'files'=> $files,
+            'cari' => $cari
+        );
+        return view('admin.list_jurnal.v_list_jurnal', $data);
+        
+    }
+
+    // LIST  ARTIKEL
+
+    public function list_artikel () {
+        $req = request();
+        $this->author_admin($req);
+
+        $cari = trim_all(request()->input('cari'));
+        $cari = htmlspecialchars($cari);
+        $files = File::list_artikel($cari);
+        $data = array(
+            'files'=> $files,
+            'cari' => $cari
+        );
+        return view('admin.list_artikel.v_list_artikel', $data);
+        
+    }
+
+    // LIST SKRIPSI
+
+    public function list_skripsi () {
+        $req = request();
+        $this->author_admin($req);
+
+        $cari = trim_all(request()->input('cari'));
+        $cari = htmlspecialchars($cari);
+        $files = File::list_skripsi($cari);
+        $data = array(
+            'files'=> $files,
+            'cari' => $cari
+        );
+        return view('admin.list_skripsi.v_list_skripsi', $data);
+        
+    }
+
+    // DETAIL FILE
 
     public function detail_file($id_file) {
         $req = request();
@@ -94,6 +168,8 @@ class AdminControllers extends Controller
         }
     }
 
+    // DELETE FILE
+
 
     public function delete_file($id_file) {
         $req = request();
@@ -128,6 +204,8 @@ class AdminControllers extends Controller
             }
         }
     }
+
+    // EDIT FILE
 
     public function edit_file ($id_file) {
         $req = request();
@@ -165,12 +243,15 @@ class AdminControllers extends Controller
         }
     }
 
+    // EDIT PROSES
+
     public function edit_proses (Request $req) {
         $this->author_admin($req);
 
         $id_file = $req->input('id_file');
-        $file = File::detail_file($id_file);
-        if ($file->kategori == 'jurnal') {
+        $kategori = $req->input('kategori');
+
+        if ($kategori == 'jurnal') {
             
             $validasi = $req->validate(
                 [
@@ -192,7 +273,6 @@ class AdminControllers extends Controller
         }
 
             $judul = $req->input('judul');
-            $kategori = $req->input('kategori');
             $file_data = $req->file('file_data');
             $cdate = date('Y-m-d H:i:s');
 
@@ -217,56 +297,176 @@ class AdminControllers extends Controller
                     ));
             }
 
-            if ($kategori == 'ebook') {
-                File::where('id_file', $id_file)
-                ->update(array(
-                    'judul' => $judul,
-                    'kategori' => $kategori,
-                    'updated_at' => $cdate
-                ));
-                Book::where('id_file', $id_file)
-                ->update(array(
-                    'updated_at' => $cdate
-                ));
-            } else if ($kategori == 'jurnal') {
-                File::where('id_file', $id_file)
-                ->update(array(
-                    'judul' => $judul,
-                    'kategori' => $kategori,
-                    'updated_at' => $cdate
-                ));
-                Jurnal::where('id_file', $id_file)
-                ->update(array(
-                    'abstrak' => $abstrak,
-                    'updated_at' => $cdate
-                ));
-            } else if ($kategori == 'artikel') {
-                File::where('id_file', $id_file)
-                ->update(array(
-                    'judul' => $judul,
-                    'kategori' => $kategori,
-                    'updated_at' => $cdate
-                ));
-                Artikel::where('id_file', $id_file)
-                ->update(array(
-                    'updated_at' => $cdate
-                ));
-            } else if ($kategori == 'skripsi') {
-                File::where('id_file', $id_file)
-                ->update(array(
-                    'judul' => $judul,
-                    'kategori' => $kategori,
-                    'updated_at' => $cdate
-                ));
-                Skripsi::where('id_file', $id_file)
-                ->update(array(
-                    'updated_at' => $cdate
-                ));
+            $file = File::select('kategori')
+            ->where('id_file', $id_file)
+            ->first();
+
+            if ($file->kategori == $kategori) {
+
+                if ($kategori == 'ebook') {
+                    File::where('id_file', $id_file)
+                    ->update(array(
+                        'judul' => $judul,
+                        'kategori' => $kategori,
+                        'updated_at' => $cdate
+                    ));
+                    Book::where('id_file', $id_file)
+                    ->update(array(
+                        'updated_at' => $cdate
+                    ));
+                } else if ($kategori == 'jurnal') {
+                    File::where('id_file', $id_file)
+                    ->update(array(
+                        'judul' => $judul,
+                        'kategori' => $kategori,
+                        'updated_at' => $cdate
+                    ));
+                    Jurnal::where('id_file', $id_file)
+                    ->update(array(
+                        'abstrak' => $abstrak,
+                        'updated_at' => $cdate
+                    ));
+                } else if ($kategori == 'artikel') {
+                    File::where('id_file', $id_file)
+                    ->update(array(
+                        'judul' => $judul,
+                        'kategori' => $kategori,
+                        'updated_at' => $cdate
+                    ));
+                    Artikel::where('id_file', $id_file)
+                    ->update(array(
+                        'updated_at' => $cdate
+                    ));
+                } else if ($kategori == 'skripsi') {
+                    File::where('id_file', $id_file)
+                    ->update(array(
+                        'judul' => $judul,
+                        'kategori' => $kategori,
+                        'updated_at' => $cdate
+                    ));
+                    Skripsi::where('id_file', $id_file)
+                    ->update(array(
+                        'updated_at' => $cdate
+                    ));
+                }
+
+            } else {
+                if ($file->kategori == 'ebook') {
+                    Book::delete_ebook($id_file);
+                    File::where('id_file', $id_file)
+                    ->update(array(
+                        'judul' => $judul,
+                        'kategori' => $kategori,
+                        'updated_at' => $cdate
+                    ));
+
+                    if ($kategori == 'jurnal') {
+                        Jurnal::insert(array(
+                            'id_file' => $id_file,
+                            'abstrak' => $abstrak,
+                            'created_at' => $cdate
+                        ));
+                    } else if ($kategori == 'artikel') {
+                        Artikel::insert(array(
+                            'id_file' => $id_file,
+                            'created_at' => $cdate
+                        ));
+                    } else if ($kategori == 'skripsi') {
+                        Skripsi::insert(array(
+                            'id_file' => $id_file,
+                            'created_at' => $cdate
+                        ));
+                    }
+                } else if ($file->kategori == 'jurnal') {
+                    Jurnal::delete_jurnal($id_file);
+                    File::where('id_file', $id_file)
+                    ->update(array(
+                        'judul' => $judul,
+                        'kategori' => $kategori,
+                        'updated_at' => $cdate
+                    ));
+
+                    if ($kategori == 'ebook') {
+                        Book::insert(array(
+                            'id_file' => $id_file,
+                            'created_at' => $cdate
+                        ));
+                    } else if ($kategori == 'artikel') {
+                        Artikel::insert(array(
+                            'id_file' => $id_file,
+                            'created_at' => $cdate
+                        ));
+                    } else if ($kategori == 'skripsi') {
+                        Skripsi::insert(array(
+                            'id_file' => $id_file,
+                            'created_at' => $cdate
+                        ));
+                    }
+
+                } else if ($file->kategori == 'artikel') {
+
+                    Artikel::delete_artikel($id_file);
+                    File::where('id_file', $id_file)
+                    ->update(array(
+                        'judul' => $judul,
+                        'kategori' => $kategori,
+                        'updated_at' => $cdate
+                    ));
+
+                    if ($kategori == 'ebook') {
+                        Book::insert(array(
+                            'id_file' => $id_file,
+                            'created_at' => $cdate
+                        ));
+                    } else if ($kategori == 'jurnal') {
+                        Jurnal::insert(array(
+                            'id_file' => $id_file,
+                            'abstrak' => $abstrak,
+                            'created_at' => $cdate
+                        ));
+                    } else if ($kategori == 'skripsi') {
+                        Skripsi::insert(array(
+                            'id_file' => $id_file,
+                            'created_at' => $cdate
+                        ));
+                    }
+
+                } else if ($file->kategori == 'skripsi') {
+                    Skripsi::delete_skripsi($id_file);
+                    File::where('id_file', $id_file)
+                    ->update(array(
+                        'judul' => $judul,
+                        'kategori' => $kategori,
+                        'updated_at' => $cdate
+                    ));
+
+                    if ($kategori == 'ebook') {
+                        Book::insert(array(
+                            'id_file' => $id_file,
+                            'created_at' => $cdate
+                        ));
+                    } else if ($kategori == 'jurnal') {
+                        Jurnal::insert(array(
+                            'id_file' => $id_file,
+                            'abstrak' => $abstrak,
+                            'created_at' => $cdate
+                        ));
+                    } else if ($kategori == 'artikel') {
+                        Artikel::insert(array(
+                            'id_file' => $id_file,
+                            'created_at' => $cdate
+                        ));
+                    }
+                }
             }
+
+            
 
             return redirect()->route('admin.file', array('file_id'=>$id_file));
         
     }
+
+    // UPLOAD PROSES
 
     public function upload_proses(Request $req) {
         $this->author_admin($req);
@@ -353,6 +553,8 @@ class AdminControllers extends Controller
         return redirect()->route('admin.file', array('file_id'=>$id_file));
     }
 
+    // DOWNLOAD FILE
+
     public function download_file (Request $req) {
         $this->author_admin($req);
 
@@ -363,9 +565,13 @@ class AdminControllers extends Controller
         }
     }
 
+    // FORM TAMBAH USER
+
     public function form_tambah_user () {
         return view('admin.tambah_user.v_tambah_user');
     }
+
+    // TAMBAH USER
 
     public function tambah_user (Request $req) {
         $this->author_admin($req);
@@ -389,6 +595,8 @@ class AdminControllers extends Controller
         return redirect()->route('admin.form_tambah_user');
 
     }
+
+    // AUTHORIZE ADMIN
 
     public function author_admin ($request) {
         if (!$request->user()->authorizeRoles('admin')) {

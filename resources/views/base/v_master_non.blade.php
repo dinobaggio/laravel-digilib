@@ -11,17 +11,20 @@
     <link href="{{ URL::asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="{{ URL::asset('css/album.css') }}" rel="stylesheet">
+    <script src="{{ URL::asset('js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ URL::asset('js/vendor/popper.min.js') }}"></script>
+    <script src="{{ URL::asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ URL::asset('js/vendor/holder.min.js') }}"></script>
 </head>
 <body class="bg-light">
+
             @yield('nav_bar')
+
+            @yield('jumbotron')
         
         <main role="main" style="min-height: 650px;">
             <div class="album">
                 <div class="container">
-                    <div>
-                        <h1>@yield('title')</h1>
-                        <hr/>
-                    </div>
 
                     @yield('content')
                     
@@ -30,10 +33,7 @@
         </main>
 
 
-    <script src="{{ URL::asset('js/jquery-3.3.1.slim.min.js') }}"></script>
-    <script src="{{ URL::asset('js/vendor/popper.min.js') }}"></script>
-    <script src="{{ URL::asset('js/bootstrap.min.js') }}"></script>
-    <script src="{{ URL::asset('js/vendor/holder.min.js') }}"></script>
+    
     <script>
         function halaman (url) {
             window.open(url, '_self');

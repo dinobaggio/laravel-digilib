@@ -1,9 +1,23 @@
 @extends('base.v_master_non')
-@section('title', 'Selamat datang di digilib')
+@section('title', 'Selamat Datang di Digilib')
 
 @section('nav_bar')
     @include('base.nav_non_user')
 @endsection('nav_bar')
+
+
+@section('jumbotron')
+
+<div class="container-fluid mb-4">
+  <div class="jumbotron bg-secondary">
+    <h1 class="text-light">@yield('title')</h1> 
+    <p></p> 
+  </div>
+</div>
+
+@endsection('jumbotron')
+
+
 
 @section('content')
 
@@ -50,3 +64,4 @@
 </div>
 @endif
 @endsection('content')
+

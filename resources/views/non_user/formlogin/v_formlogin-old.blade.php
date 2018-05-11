@@ -1,3 +1,17 @@
+@extends('base.v_master_non')
+@section('title', 'Form Login')
+
+
+@section('nav_bar')
+    @include('base.nav_non_user')
+@endsection('nav_bar')
+
+@section('content')
+
+<div>
+    <h2>@yield('title')</h2>
+    <hr>
+</div>
 
 <form method="POST" action="{{ route('login') }}">
     @csrf
@@ -53,4 +67,6 @@
     </div>
 </form>
 
+
+@endsection('content')
 

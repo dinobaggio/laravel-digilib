@@ -11,10 +11,11 @@
     <link href="{{ URL::asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="{{ URL::asset('css/album.css') }}" rel="stylesheet">
+    <script src="{{ URL::asset('js/jquery-3.3.1.min.js') }}"></script>
 </head>
 <body class="bg-light">
-<nav class="navbar navbar-light bg-light">
-  <span class="navbar-brand">Digilib</span>
+<nav class="navbar navbar-light bg-dark">
+  <span class="navbar-brand text-light">Digilib</span>
 </nav>
 <div class="container-fluid">
     <div class="row">
@@ -37,7 +38,7 @@
     </div>
 </div>
 
-    <script src="{{ URL::asset('js/jquery-3.3.1.slim.min.js') }}"></script>
+    
     <script src="{{ URL::asset('js/vendor/popper.min.js') }}"></script>
     <script src="{{ URL::asset('js/bootstrap.min.js') }}"></script>
     <script src="{{ URL::asset('js/vendor/holder.min.js') }}"></script>
