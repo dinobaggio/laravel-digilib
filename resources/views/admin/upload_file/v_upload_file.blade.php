@@ -22,7 +22,7 @@
         <div class="form-group row">
             <label for="kategori" class="col-md-4 col-form-label text-md-right">{{ __('Kategori') }}</label>
             <div class="col-md-6">
-                <select name="kategori" id="kategori" class="form-control" value="{{ old('kategori') }}" onchange="tampil_abstrak()">
+                <select name="kategori" id="tagKategori" class="form-control" value="{{ old('kategori') }}" onchange="tampil_abstrak()">
                     <option value="">Pilih Kategori</option>
                     <option value="ebook">E-Book</option>
                     <option value="jurnal">Jurnal</option>
@@ -32,11 +32,11 @@
             </div>
         </div>
 
-        <div class="form-group row" id="abstrak" style="display:none;">
+        <div class="form-group row" id="divAbstrak" style="display:none;">
             <label for="abstrak" class="col-md-4 col-form-label text-md-right">{{ __('Abstrak') }}</label>
 
             <div class="col-md-6">
-                <textarea id="abstrak" type="text" class="form-control" name="abstrak" value="{{ old('abstrak') }}" placeholder="Abstrak" > </textarea>
+                <textarea type="text" class="form-control" name="abstrak" placeholder="Abstrak ..." > </textarea>
             </div>
         </div>
 
@@ -81,14 +81,13 @@ function upload_proses () {
 }
 
 function tampil_abstrak () {
-    let kategori = document.getElementById('kategori');
-    let abstrak = document.getElementById('abstrak');
+    let kategori = document.getElementById('tagKategori');
+    let abstrak = document.getElementById('divAbstrak');
     if (kategori.value == 'jurnal') {
         abstrak.style.display = '';
     } else {
         abstrak.style.display = 'none';
     }
-    //console.log(kategori.value);
 }
 </script>
 

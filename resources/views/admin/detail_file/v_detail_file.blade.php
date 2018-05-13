@@ -18,6 +18,10 @@
         </div>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
+                <b>Uploader :</b><br>
+                {{ $file->name }}
+            </li>
+            <li class="list-group-item">
                 <b>Kategori :</b><br>
                 {{ $file->kategori }}
             </li>

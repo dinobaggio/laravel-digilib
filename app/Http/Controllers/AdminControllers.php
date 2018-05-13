@@ -26,11 +26,11 @@ class AdminControllers extends Controller
     // INDEX
 
     public function index () {
-        //dd(File::select('path')->get()[0]['path']);
+        
 
         $req = request();
         $this->author_admin($req);
-
+        //dd($req->user()->id);
         $cari = trim_all(request()->input('cari'));
         $cari = htmlspecialchars($cari);
         $files = File::list_file_homepage($cari);
@@ -180,25 +180,21 @@ class AdminControllers extends Controller
             if ($file->kategori == 'ebook') {
                 $book = Book::detail_ebook($id_file);
                 Storage::delete($book->path);
-                Book::delete_ebook($id_file);
                 File::delete_file($id_file);
                 return redirect()->route('admin.list_file');
             } else if ($file->kategori == 'jurnal') {
                 $jurnal = Jurnal::detail_jurnal($id_file);
                 Storage::delete($jurnal->path);
-                Jurnal::delete_jurnal($id_file);
                 File::delete_file($id_file);
                 return redirect()->route('admin.list_file');
             } else if ($file->kategori == 'artikel') {
                 $artikel = Artikel::detail_artikel($id_file);
                 Storage::delete($artikel->path);
-                Artikel::delete_artikel($id_file);
                 File::delete_file($id_file);
                 return redirect()->route('admin.list_file');
             } else if ($file->kategori == 'skripsi') {
                 $skripsi = Skripsi::detail_skripsi($id_file);
                 Storage::delete($skripsi->path);
-                Skripsi::delete_skripsi($id_file);
                 File::delete_file($id_file);
                 return redirect()->route('admin.list_file');
             }
@@ -492,7 +488,7 @@ class AdminControllers extends Controller
             );
         }
 
-
+        $id_user = $req->user()->id;
         $judul = $req->input('judul');
         $file_data = $req->file('file_data');
         $size = $file_data->getClientSize();
@@ -502,17 +498,6 @@ class AdminControllers extends Controller
         $extension = $file_data->getClientOriginalExtension();
         $path = $file_data->storeAs('public/files', $hash_name);
         $cdate = date('Y-m-d H:i:s');
-
-        $data = array(
-            'judul' => $judul,
-            'kategori' => $kategori,
-            'size' => $size,
-            'mime_file' => $mime_file,
-            'nama_asli' => $nama_asli,
-            'hash_name' => $hash_name,
-            'extension' => $extension,
-            'path' => $path
-        );
 
         $id_file = File::insertGetId(
             array(
@@ -524,6 +509,7 @@ class AdminControllers extends Controller
                 'hash_name' => $hash_name,
                 'extension' => $extension,
                 'path' => $path,
+                'id_user' => $id_user,
                 'created_at'=>$cdate
             )
         );

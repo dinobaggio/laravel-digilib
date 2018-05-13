@@ -3,8 +3,6 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Support\Facades\Storage;
-use App\File;
 
 class CreateFilesTable extends Migration
 {
@@ -17,6 +15,7 @@ class CreateFilesTable extends Migration
     {
         Schema::create('files', function (Blueprint $table) {
             $table->increments('id_file');
+            
             $table->string('judul')->nullable();
             $table->string('kategori')->nullable();           
             $table->string('nama_asli')->nullable();
@@ -26,7 +25,17 @@ class CreateFilesTable extends Migration
             $table->string('path')->nullable();
             $table->integer('size')->default(0);
 
+            $table->integer('id_user')->unsigned(); // foreign key
+
             $table->timestamps();
+        });
+
+        Schema::table('files', function(Blueprint $table){
+            $table->foreign('id_user')
+            ->references('id')
+            ->on('users')
+            ->onDelete('cascade')
+            ->onUpdate('no action');
         });
     }
 
@@ -37,15 +46,6 @@ class CreateFilesTable extends Migration
      */
     public function down()
     {
-        $files = $this->files_data();
-        for ($i=0;$i<count($files);$i++) {
-            Storage::delete($files[0]['path']);
-        }
         Schema::dropIfExists('files');
-    }
-
-    public function files_data () {
-        $files = File::select('path')->get();
-        return $files;
     }
 }
