@@ -28,6 +28,7 @@ class File extends Model
         )
         ->orderBy('files.judul', 'asc')
         ->paginate($page);
+        
         return $files;
     }
 

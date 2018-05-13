@@ -29,7 +29,7 @@
             <div class="card-body">
                 <h5 class="card-title">{{ $file->judul }}</h5>
                 <p class="card-text"><b>Size : </b>{{ human_filesize($file->size) }}</p>
-                <p class="card-text"><b>By : </b>{{ $file->name }}</p>
+                <p class="card-text"><b>By : </b>{{ $file->name }}  ({{ $user->where('id', $file->id_user)->first()->getRole()->name }})  </p>
                 <a href="javascript:view('{{ route('admin.file', ['file_id'=> $file->id_file]) }}')" class="btn btn-primary">Detail</a>
             </div>
         </div>

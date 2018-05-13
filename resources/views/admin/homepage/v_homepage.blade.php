@@ -40,7 +40,7 @@
                     <div class="card-body" >
                         <h4><a class="nav-link" href="{{ route('admin.file', ['file_id'=> $file->id_file]) }}">{{$file->judul}}</a></h4>
                         <p><b>Kategori :</b> {{ $file->kategori }} </p>
-                        <p><b>By :</b> {{ $file->name }} </p>
+                        <p><b>By :</b> {{ $file->name }} ({{ $user->where('id', $file->id_user)->first()->getRole()->name }}) </p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
                             <button type="button" class="btn btn-sm btn-outline-secondary" onclick="halaman('{{ route('admin.file', ['file_id'=> $file->id_file]) }}')">View</button>

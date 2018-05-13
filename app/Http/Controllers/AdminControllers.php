@@ -34,9 +34,11 @@ class AdminControllers extends Controller
         $cari = trim_all(request()->input('cari'));
         $cari = htmlspecialchars($cari);
         $files = File::list_file_homepage($cari);
+        $user = new User();
         $data = array(
             'files'=> $files,
-            'cari' => $cari
+            'cari' => $cari,
+            'user' => $user
         );
         return view('admin.homepage.v_homepage', $data);
 
@@ -51,9 +53,13 @@ class AdminControllers extends Controller
         $cari = trim_all(request()->input('cari'));
         $cari = htmlspecialchars($cari);
         $files = File::list_file($cari);
+        
+        $user = new User();
+
         $data = array(
             'files'=> $files,
-            'cari' => $cari
+            'cari' => $cari,
+            'user' => $user
         );
         return view('admin.list_file.v_list_file', $data);
         
