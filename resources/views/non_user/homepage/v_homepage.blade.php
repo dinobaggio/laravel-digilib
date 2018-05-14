@@ -6,17 +6,6 @@
 @endsection('nav_bar')
 
 
-@section('jumbotron')
-
-<div class="container-fluid mb-4">
-  <div class="jumbotron bg-secondary">
-    <h1 class="text-light">@yield('title')</h1> 
-    <p></p> 
-  </div>
-</div>
-
-@endsection('jumbotron')
-
 
 
 @section('content')

@@ -15,13 +15,24 @@
     <script src="{{ URL::asset('js/vendor/popper.min.js') }}"></script>
     <script src="{{ URL::asset('js/bootstrap.min.js') }}"></script>
     <script src="{{ URL::asset('js/vendor/holder.min.js') }}"></script>
+
+    <style>
+       
+    </style>
 </head>
 <body class="bg-light">
 
-            @yield('nav_bar')
+            @yield('nav_bar') 
 
-            @yield('jumbotron')
+        <!-- JUMBOTRON -->
+        <div class="container-fluid mb-4">
+            <div class="jumbotron bg-dark">
+                <h1 class="text-light">@yield('title')</h1> 
+                <p></p> 
+            </div>
+        </div>
         
+        <!-- MAIN -->
         <main role="main" style="min-height: 650px;">
             <div class="album">
                 <div class="container">
