@@ -32,4 +32,8 @@ class Jurnal extends Model
         $jurnal = self::where('id_file', $id_file);
         $jurnal->delete();
     }
+
+    public function insert_jurnal ($ray) {
+        self::insert($ray);
+    }
 }

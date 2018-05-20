@@ -10,6 +10,11 @@ use App\User;
 
 class ListFileControllers extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth');
+        
+    }
+    
     // LIST FILE
 
     public function list_file () {

@@ -65,13 +65,21 @@ Route::prefix('admin')->group(function () {
         // LIST SKRIPSI
         Route::get('/list_skripsi', 'Admin\ListFileControllers@list_skripsi')->name('admin.list_skripsi');
     });
-    
-    
-
-    
-
 });
 
+
+Route::prefix('dosen')->group(function () {
+    Route::get('/', 'Dosen\DosenControllers@index')->name('dosen.homepage');
+    Route::get('/file/{id_file}', 'Dosen\DosenControllers@detail_file')->name('dosen.file');
+    Route::get('/my_jurnal', 'Dosen\DosenControllers@my_jurnal')->name('dosen.my_jurnal');
+    Route::get('/upload_jurnal', 'Dosen\UploadJurnalControllers@upload_jurnal')->name('dosen.upload_jurnal');
+    Route::post('/upload_jurnal', 'Dosen\UploadJurnalControllers@upload_jurnal')->name('dosen.upload_jurnal');
+    Route::get('/edit_jurnal', function() {
+        return redirect(URL::previous()); // Kembali ke URL sebelumnya bila masuk link edit jurnal tanpa id
+    });
+    Route::get('/edit_jurnal/{id_file}', 'Dosen\DosenControllers@edit_jurnal')->name('dosen.edit_jurnal');
+    Route::post('/edit_jurnal/{id_file}', 'Dosen\DosenControllers@edit_jurnal')->name('dosen.edit_proses');     
+});
 
 
 

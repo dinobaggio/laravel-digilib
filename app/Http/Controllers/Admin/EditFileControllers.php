@@ -14,6 +14,11 @@ use App\Artikel;
 
 class EditFileControllers extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth');
+        
+    }
+    
     public function edit_file ($id_file) {
         $req = request();
         $this->author_admin($req);

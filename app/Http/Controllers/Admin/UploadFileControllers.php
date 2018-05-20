@@ -13,6 +13,11 @@ use App\Artikel;
 
 class UploadFileControllers extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth');
+        
+    }
+    
     // FORM UPLOAD
 
     public function form_upload () {

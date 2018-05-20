@@ -180,4 +180,31 @@ class File extends Model
         $file = self::where('id_file', $id_file);
         $file->delete();
     }
+
+    public function my_jurnal ($id_dosen, $cari = '') {
+        $page = 5;
+        if ($cari != '') {
+            return self::join('users', 'files.id_user', '=', 'users.id')
+            ->select(
+                'files.id_file', 'files.judul', 'files.nama_asli', 'files.size', 'files.kategori', 
+                'files.path', 'files.id_user', 'users.name', 'files.created_at'
+            )
+            ->where('files.id_user', $id_dosen)
+            ->where('files.kategori', 'jurnal')
+            ->where('files.judul', 'LIKE', "%$cari%")
+            ->paginate($page);
+        }
+        return self::join('users', 'files.id_user', '=', 'users.id')
+        ->select(
+            'files.id_file', 'files.judul', 'files.nama_asli', 'files.size', 'files.kategori', 
+            'files.path', 'files.id_user', 'users.name', 'files.created_at'
+        )
+        ->where('id_user', $id_dosen)
+        ->where('kategori', 'jurnal')
+        ->paginate($page);
+    }
+
+    public function insert_get_id ($ray) {
+        return self::insertGetId($ray);
+    }
 }
