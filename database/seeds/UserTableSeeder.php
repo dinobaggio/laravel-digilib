@@ -21,5 +21,23 @@ class UserTableSeeder extends Seeder
         $admin->password = bcrypt('secret');
         $admin->save();
         $admin->roles()->attach($role_admin);
+
+        $role_dosen = Role::where('name', 'dosen')->first();
+        
+        $dosen = new User();
+        $dosen->name = 'Dosen Pintar';
+        $dosen->email = 'dosen@example.com';
+        $dosen->password = bcrypt('secret');
+        $dosen->save();
+        $dosen->roles()->attach($role_dosen);
+
+        $role_mahasiswa = Role::where('name', 'mahasiswa')->first();
+        
+        $mahasiswa = new User();
+        $mahasiswa->name = 'Mahasiswa Pintar';
+        $mahasiswa->email = 'mahasiswa@example.com';
+        $mahasiswa->password = bcrypt('secret');
+        $mahasiswa->save();
+        $mahasiswa->roles()->attach($role_mahasiswa);
     }
 }
