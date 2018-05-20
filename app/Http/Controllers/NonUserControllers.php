@@ -97,9 +97,9 @@ class NonUserControllers extends Controller
         if ($role == 'admin') {
             return redirect()->route('admin.homepage');
         } else if ($role == 'dosen') {
-            return redirect()->route('dosen.homepage'); // rencana
+            return redirect()->route('dosen.homepage');
         } else if ($role == 'mahasiswa') {
-            return redirect()->route('mahasiswa.homepage'); //rencana
+            return redirect()->route('mahasiswa.homepage');
         }
     }  
     

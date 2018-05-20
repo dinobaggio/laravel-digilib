@@ -7,16 +7,16 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link text-light" href="javascript:void(0)" onclick="halaman('{{ route('dosen.homepage') }}')">Home</a>
+          <a class="nav-link text-light" href="javascript:void(0)" onclick="halaman('{{ route('mahasiswa.homepage') }}')">Home</a>
         </li>
         <li class="nav-item">
-            <a href="javascript:void(0)" class="nav-link text-light" onclick="halaman('{{ route('dosen.upload_jurnal') }}')" >
-            Upload Jurnal
+        <a href="javascript:void(0)" class="nav-link text-light" onclick="halaman('{{ route('mahasiswa.upload_skripsi') }}')" >
+            Upload Skirpsi
           </a>
         </li>
         <li class="nav-item">
-            <a href="javascript:void(0)" class="nav-link text-light" onclick="halaman('{{ route('dosen.my_jurnal') }}')">
-              My Jurnal
+        <a href="javascript:void(0)" class="nav-link text-light" onclick="halaman('{{ route('mahasiswa.my_skripsi') }}')">
+              My Skripsi
             </a>
         </li>
         <li class="nav-item">

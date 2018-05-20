@@ -28,6 +28,10 @@ class Skripsi extends Model
         return $skripsi;
     }
 
+    public function insert_skripsi ($ray) {
+        self::insert($ray);
+    }
+
     public static function delete_skripsi ($id_file) {
         $skripsi = self::where('id_file', $id_file);
         $skripsi->delete();

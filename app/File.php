@@ -204,6 +204,29 @@ class File extends Model
         ->paginate($page);
     }
 
+    public function my_skripsi ($id_mahasiswa, $cari = '') {
+        $page = 5;
+        if ($cari != '') {
+            return self::join('users', 'files.id_user', '=', 'users.id')
+            ->select(
+                'files.id_file', 'files.judul', 'files.nama_asli', 'files.size', 'files.kategori', 
+                'files.path', 'files.id_user', 'users.name', 'files.created_at'
+            )
+            ->where('files.id_user', $id_mahasiswa)
+            ->where('files.kategori', 'skripsi')
+            ->where('files.judul', 'LIKE', "%$cari%")
+            ->paginate($page);
+        }
+        return self::join('users', 'files.id_user', '=', 'users.id')
+        ->select(
+            'files.id_file', 'files.judul', 'files.nama_asli', 'files.size', 'files.kategori', 
+            'files.path', 'files.id_user', 'users.name', 'files.created_at'
+        )
+        ->where('id_user', $id_mahasiswa)
+        ->where('kategori', 'skripsi')
+        ->paginate($page);
+    }
+
     public function insert_get_id ($ray) {
         return self::insertGetId($ray);
     }

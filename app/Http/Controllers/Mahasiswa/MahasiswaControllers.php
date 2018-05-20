@@ -1,26 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\Dosen;
+namespace App\Http\Controllers\Mahasiswa;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\File;
-use App\Book;
 use App\Jurnal;
+use App\Skripsi;
 use App\Artikel;
+use App\Book;
 use Illuminate\Support\Facades\Storage;
 
-class DosenControllers extends Controller
+class MahasiswaControllers extends Controller
 {
-    public function __construct(){
-        $this->middleware('auth');
-        
-    }
-
     public function index () {
         $req = request();
-        $this->author_dosen($req);
+        $this->author_mahasiswa($req);
 
         $cari = trim_all(request()->input('cari'));
         $cari = htmlspecialchars($cari);
@@ -29,14 +25,12 @@ class DosenControllers extends Controller
             'files'=> $files,
             'cari' => $cari
         );
-        return view('dosen.homepage.v_homepage', $data);
+        return view('mahasiswa.homepage.v_homepage', $data);
     }
-
-    // DETAIL FILE
 
     public function detail_file ($id_file) {
         $req = request();
-        $this->author_dosen($req);
+        $this->author_mahasiswa($req);
 
         $file = File::detail_file($id_file);
         if ($file == true) {
@@ -62,52 +56,31 @@ class DosenControllers extends Controller
                 );
             }
 
-            return view('dosen.detail_file.v_detail_file', $data);
+            return view('mahasiswa.detail_file.v_detail_file', $data);
         }
     }
 
-    // MY JURNAL
-    
-    public function my_jurnal() {
+    public function edit_skripsi ($id_file) {
+
         $req = request();
-        $this->author_dosen($req);
-
-        $id_dosen = $req->user()->id;
-
-        $cari = trim_all($req->input('cari'));
-        $cari = htmlspecialchars($cari);
-        $file = new File();
-        $file = $file->my_jurnal($id_dosen, $cari);
-        $data = array (
-            'files' => $file,
-            'cari' => $cari
-        );
-
-        return view('dosen.my_jurnal.v_my_jurnal', $data);
-    }
-
-    public function edit_jurnal ($id_file) {
-        $req = request();
-        $this->author_dosen($req);
+        $this->author_mahasiswa($req);
 
         if ($req->isMethod('post')) {
 
             $validasi = $req->validate([
-                'judul' => 'required',
-                'abstrak' => 'required'
+                'judul' => 'required'
             ]);
 
             $judul = $req->input('judul');
-            $abstrak = $req->input('abstrak');
             $file_data = $req->file('file_data');
             $cdate = date('Y-m-d H:i:s');
             $file = File::select('path')->where('id_file', $id_file)->first();
             if ($file_data) {
-                
+
                 $size = $file_data->getClientSize();
                 $mime_file = $file_data->getMimeType();
                 $nama_asli = $file_data->getClientOriginalName();
-                $hash_name = 'jurnal_'.$file_data->hashName();
+                $hash_name = 'skripsi_'.$file_data->hashName();
                 $extension = $file_data->getClientOriginalExtension();
                 Storage::delete($file->path);
                 $path = $file_data->storeAs('public/files', $hash_name);
@@ -126,38 +99,60 @@ class DosenControllers extends Controller
             File::where('id_file', $id_file)
             ->update(array(
                 'judul' => $judul,
-                'kategori' => 'jurnal',
+                'kategori' => 'skripsi',
                 'updated_at' => $cdate
             ));
-            Jurnal::where('id_file', $id_file)
+            Skripsi::where('id_file', $id_file)
             ->update(array(
-                'abstrak' => $abstrak,
                 'updated_at' => $cdate
             ));
 
-            return redirect()->route('dosen.file', ['id_file' => $id_file]);
+            return redirect()->route('mahasiswa.file', ['id_file' => $id_file]);
 
         } else {
-            $file = File::join('jurnals', 'files.id_file', '=', 'jurnals.id_file')
+            $file = File::join('skripsis', 'files.id_file', '=', 'skripsis.id_file')
             ->where('files.id_file', $id_file)->first();
 
             if ($file == null) {
-                $jurnal = '';
+                $skripsi = '';
             } else {
-                $jurnal = $file;
+                $skripsi = $file;
             }
 
             $data = array(
-                'jurnal' => $jurnal
+                'skripsi' => $skripsi
             );
-            return view ('dosen.my_jurnal.v_edit_jurnal', $data);
+            return view('mahasiswa.my_skripsi.v_edit_skripsi', $data);
         }
+        
+    }
+
+    public function my_skripsi () {
+
+        $req = request();
+        $this->author_mahasiswa($req);
+
+        $id_mahasiswa = $req->user()->id;
+
+        $cari = trim_all($req->input('cari'));
+        $cari = htmlspecialchars($cari);
+        $file = new File();
+        $file = $file->my_skripsi($id_mahasiswa, $cari);
+        $data = array (
+            'files' => $file,
+            'cari' => $cari
+        );
+
+        return view('mahasiswa.my_skripsi.v_my_skripsi', $data);
 
     }
 
-    // AUTHORIZE DOSEN
-    public function author_dosen ($request) {
-        if (!$request->user()->authorizeRoles('dosen')) {
+    public function author_mahasiswa ($req) {
+        if ($req->user() == null) {
+            Auth::logout();
+            abort(401, 'This action is unauthorized.');
+        }
+        if (!$req->user()->authorizeRoles('mahasiswa')) {
             Auth::logout();
             abort(401, 'This action is unauthorized.');
         }

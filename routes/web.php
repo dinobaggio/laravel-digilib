@@ -81,6 +81,19 @@ Route::prefix('dosen')->group(function () {
     Route::post('/edit_jurnal/{id_file}', 'Dosen\DosenControllers@edit_jurnal')->name('dosen.edit_proses');     
 });
 
+Route::prefix('mahasiswa')->group(function () {
+    Route::get('/', 'Mahasiswa\MahasiswaControllers@index')->name('mahasiswa.homepage');
+    Route::get('/file/{id_file}', 'Mahasiswa\MahasiswaControllers@detail_file')->name('mahasiswa.file');
+    Route::get('/upload_skripsi', 'Mahasiswa\UploadSkripsiControllers@upload_skripsi')->name('mahasiswa.upload_skripsi');
+    Route::post('/upload_skripsi', 'Mahasiswa\UploadSkripsiControllers@upload_skripsi')->name('mahasiswa.upload_skripsi');
+    Route::get('/my_skripsi', 'Mahasiswa\MahasiswaControllers@my_skripsi')->name('mahasiswa.my_skripsi');
+    Route::get('/edit_skripsi', function() {
+        return redirect(URL::previous()); // Kembali ke URL sebelumnya bila masuk link edit skripsi tanpa id
+    });
+    Route::get('/edit_skripsi/{id_file}', 'Mahasiswa\MahasiswaControllers@edit_skripsi')->name('mahasiswa.edit_skripsi');
+    Route::post('/edit_skripsi/{id_file}', 'Mahasiswa\MahasiswaControllers@edit_skripsi')->name('mahasiswa.edit_proses');     
+});
+
 
 
 
